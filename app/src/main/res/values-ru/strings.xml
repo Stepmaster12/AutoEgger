@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Egg Inc Autoclicker</string>
+    <string name="app_subtitle">AutoEgger</string>
+    <string name="overlay_title">Egg Inc Bot</string>
+    <string name="icon_chicken">🐔</string>
+    <string name="icon_gift">🎁</string>
+    <string name="icon_bolt">⚡</string>
+    <string name="icon_egg">🥚</string>
+    <string name="icon_chart">📊</string>
+    <string name="icon_note">📝</string>
+    <string name="icon_wrench">🔧</string>
+    <!-- Accessibility Service -->
+    <string name="accessibility_service_description">Этот сервис необходим для автоматизации кликов в игре Egg Inc. Он симулирует нажатия на экран для фарма куриц, активации бустов и сбора подарков.</string>
+    <!-- Main Activity -->
+    <string name="grant_permission">Разрешить</string>
+    <string name="launch_overlay">🚀 ЗАПУСТИТЬ ОВЕРЛЕЙ</string>
+    <string name="status">Статус</string>
+    <string name="overlay_status">Оверлей</string>
+    <string name="app_settings_status">Разрешение</string>
+    <string name="app_settings_status_required">Разрешение</string>
+    <string name="app_settings_status_done">Разрешение</string>
+    <string name="app_settings_status_locked">Разрешение</string>
+    <string name="app_settings_hint_dots">Подсказка: сначала нажмите «Предоставить» в строке «Доступность» и откройте сервис. После предупреждения вернитесь в настройки приложения, нажмите ⋮ (справа сверху) и выберите «Разрешить ограниченные настройки».</string>
+    <string name="accessibility_status">Accessibility</string>
+    <string name="accessibility_locked">Доступность (недоступно)</string>
+    <string name="open_settings">Предоставить</string>
+    <string name="permission_progress_0_3">Настройка разрешений: 0/4</string>
+    <string name="permission_progress_format">Настройка разрешений: %1$d/4</string>
+    <string name="permission_next_step">Следующий шаг</string>
+    <string name="permission_next_overlay">Шаг 1: Разрешить оверлей</string>
+    <string name="permission_next_accessibility_prime">Шаг 2: Открыть доступность</string>
+    <string name="permission_next_app_settings">Шаг 3: Открыть настройки</string>
+    <string name="permission_next_accessibility_enable">Шаг 4: Включить доступность</string>
+    <string name="permissions_ready">Все разрешения готовы</string>
+    <!-- Chicken Settings -->
+    <string name="swipe_duration">Удержание (сек)</string>
+    <string name="rest_duration">Отдых (сек)</string>
+    <string name="smart_mode">Умный режим</string>
+    <string name="smart_mode_desc">Авто-остановка при красной зоне</string>
+    <!-- Gift Settings -->
+    <string name="gift_interval">Интервал подарков (сек)</string>
+    <string name="use_cv">Использовать CV (Android 11+)</string>
+    <string name="cv_desc">Автопоиск коробки компьютерным зрением</string>
+    <!-- Overlay -->
+    <string name="start">▶ СТАРТ</string>
+    <string name="stop">⏹ СТОП</string>
+    <string name="settings">⚙ Настройки</string>
+    <string name="close">✕</string>
+    <string name="minimize">−</string>
+    <!-- Toggle buttons -->
+    <string name="toggle_research_on">🔬 Исслед. вкл</string>
+    <string name="toggle_research_off">🔬 Исслед. выкл</string>
+    <string name="toggle_boost_on">💰 2x вкл</string>
+    <string name="toggle_boost_off">💰 2x выкл</string>
+    <string name="toggle_drones_on">🚁 Дроны вкл</string>
+    <string name="toggle_drones_off">🚁 Дроны выкл</string>
+    <!-- Status -->
+    <string name="status_running">Работает</string>
+    <string name="status_paused_boost">Пауза (буст 2x)</string>
+    <string name="status_paused_research">Пауза (исследования/буст)</string>
+    <string name="status_stopped">Остановлено</string>
+    <string name="status_chicken_farming">Фарм куриц</string>
+    <string name="status_drone_mode">🚁 Ловля дронов</string>
+    <!-- Notifications -->
+    <string name="notification_title">Egg Inc Autoclicker</string>
+    <string name="notification_text">Автокликер активен</string>
+    <string name="channel_name">Сервис автокликера</string>
+    <string name="channel_description">Уведомления о работе автокликера</string>
+    <string name="channel_overlay_name">Оверлей</string>
+    <string name="channel_overlay_description">Уведомление необходимо для работы оверлея</string>
+    <string name="overlay_active">Оверлей активен</string>
+    <!-- Settings Activity -->
+    <string name="settings_title">Настройки</string>
+    <string name="back">🔙 Назад</string>
+    <string name="save">✓ Сохранить</string>
+    <string name="reset">Сбросить</string>
+    <!-- Auto Features -->
+    <string name="auto_research">🔬 Авто-исследования</string>
+    <string name="auto_boost">💰 Авто-буст 2x деньги</string>
+    <string name="auto_drones">🚁 Авто-дроны</string>
+    <string name="research_interval">Интервал проверки (сек)</string>
+    <string name="boost_interval">Интервал буста (мин)</string>
+    <string name="swipes_up">Свайпов вверх</string>
+    <string name="swipes_down">Свайпов вниз</string>
+    <!-- Messages -->
+    <string name="toast_permission_overlay">Сначала разрешите оверлей!</string>
+    <string name="toast_permission_accessibility">Сначала включите Accessibility сервис!</string>
+    <string name="launch_error_message">Ошибка запуска: %1$s</string>
+    <string name="error_unknown">Неизвестная ошибка</string>
+    <string name="toast_settings_saved">Настройки сохранены!</string>
+    <string name="toast_all_stopped">Все функции остановлены</string>
+    <string name="toast_drone_mode_active">🚁 Режим дронов: нажмите СТАРТ</string>
+    <string name="toast_stop_first">❌ Сначала нажмите СТОП!</string>
+    <string name="toast_boost_started">Авто-буст 2x: старт через 30 сек, затем каждые %d мин</string>
+    <string name="toast_boost_activated">✓ Буст 2x активирован!</string>
+    <!-- Tap to Edit -->
+    <!-- Drone Points -->
+    <string name="toast_disable_drones_first">❌ Сначала выключите режим дронов!</string>
+    <string name="toast_drone_mode_start">🚁 Режим дронов: нажмите СТАРТ</string>
+    <!-- Dialogs -->
+    <string name="dialog_reset_details">Вернуть ВСЕ настройки к значениям по умолчанию?\n\nБудут сброшены:\n• Координаты точек\n• Координаты дронов\n• Авто-исследования и интервал\n• Настройки скролла лаборатории\n• Другие авто-фичи</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="dialog_boost_title">Авто-буст 2x деньги</string>
+    <string name="dialog_boost_message">Эта функция автоматически активирует бесплатный буст "Video Doubler" каждые N минут.\n\n⚠️ ВАЖНО:\nДля работы необходимо отключить рекламу в настройках игры.\n\n📍 Как работает:\n1. Открывает меню бустов\n2. Нажимает кнопку FREE\n3. Закрывает меню\n4. Ждёт заданный интервал</string>
+    <string name="dialog_understand">Понятно</string>
+    <!-- Language -->
+    <string name="language">Язык</string>
+    <string name="language_ru">🇷🇺 Русский</string>
+    <!-- Edit mode hint -->
+    <string name="interval_min_format">Интервал: %d мин</string>
+    <string name="interval_sec_format">Интервал проверки: %d сек</string>
+    <!-- Additional strings for layouts -->
+    <string name="enable">Включить</string>
+    <string name="auto_chicken_title">🐔 Авто-курицы</string>
+    <string name="chicken_hint">Если курицы в красной зоне - увеличь отдых. Если медленно растут - уменьши.</string>
+    <string name="gift_mode_title">🎁 Режим сбора подарков:</string>
+    <string name="gift_interval_hint">Клик по координатам каждые N секунд</string>
+    <string name="gift_warning">⚠️ Важно: Без CV расположи экран так, чтобы клики не попадали в лабораторию, парковку, курятники!</string>
+    <string name="launch_hint">Запусти Egg Inc, затем нажми кнопку выше</string>
+    <string name="auto_features_title">🧪 Авто-функции (БЕТА)</string>
+    <string name="auto_research_desc">Автоматически покупает исследования</string>
+    <string name="timer_conflict_warning">⚠️ Может конфликтовать с таймером подарков</string>
+    <string name="timer_conflict_detailed">⚠️ Интервал (%1$d сек) совпадает или кратен интервалу подарков (%2$d сек). Во время покупки исследований авто-подарки могут не сработать.</string>
+    <string name="lab_scroll_settings">Настройки прокрутки лаборатории:</string>
+    <string name="swipes_hint">Увеличь, если не все исследования покупаются</string>
+    <string name="research_strict_filter">Строгий фильтр кнопок исследований</string>
+    <string name="research_strict_filter_desc">Точнее отсев ложных нажатий, но немного выше нагрузка на процессор.</string>
+    <string name="research_fast_mode">Быстрый режим исследований</string>
+    <string name="research_fast_mode_desc">Уменьшает паузы между сериями кликов. На слабых устройствах может дать больше ложных нажатий.</string>
+    <string name="auto_boost_desc">Авто-активация Video Doubler</string>
+    <string name="auto_drones_desc">Быстрые свайпы для ловли дронов</string>
+    <string name="auto_drones_conflict">⚠️ Отключает другие авто-функции</string>
+    <string name="info">Информация</string>
+    <string name="interval_min">Интервал: %d мин</string>
+    <string name="interval_sec">Интервал: %d сек</string>
+    <string name="current_gift_interval_full">Текущий интервал подарков: %d сек (задаётся в главном меню)</string>
+    <!-- Layout strings added by subagent -->
+    <string name="auto_features_warning">Экспериментальные функции. Могут работать нестабильно.</string>
+    <string name="gift_interval_current">Текущий интервал подарков: 60 сек</string>
+    <string name="research_interval_range">Мин: 30 сек | Рекомендуется: 90 сек | Макс: 300 сек</string>
+    <string name="auto_boost_pause_warning">Во время активации буста (≈4 сек) другие функции на паузе</string>
+    <!-- More layout strings -->
+    <string name="red_cooldown">Откат после красного (сек)</string>
+    <string name="red_cooldown_hint">Время ожидания после появления красной полосы</string>
+    <string name="preset_title">⚙ Быстрые пресеты</string>
+    <string name="preset_desc">Применяют рекомендуемые значения для подарков и исследований. Интервал буста и значения свайпов лаборатории не изменяются.</string>
+    <string name="preset_safe">Безопасный</string>
+    <string name="preset_balance">Баланс</string>
+    <string name="preset_aggressive">Агрессия</string>
+    <string name="preset_applied">Пресет применён: %1$s</string>
+    <string name="unsaved_changes_title">Есть несохранённые изменения</string>
+    <string name="unsaved_changes_message">Вы изменили настройки, но не сохранили их. Сохранить перед выходом?</string>
+    <string name="save_and_exit">Сохранить и выйти</string>
+    <string name="exit_without_saving">Выйти без сохранения</string>
+    <string name="cv_mode_title">🧠 Режим CV-детекции</string>
+    <string name="cv_mode_desc">Лёгкий режим меньше нагружает процессор. Точный режим делает больше проверок и надёжнее находит подарок.</string>
+    <string name="cv_mode_lite">Лёгкий (быстрый)</string>
+    <string name="cv_mode_accurate">Точный (тяжёлый)</string>
+    <string name="boost_interval_range">Мин: 1 мин | Рекомендуется: 55 мин | Макс: 60 мин</string>
+    <string name="boost_first_activation">Первая активация через 30 сек</string>
+    <string name="auto_boost_started">Авто-буст 2x запущён. Первая активация через 30 сек...</string>
+    <string name="auto_boost_error_generic">Ошибка авто-буста: %s</string>
+    <string name="activating_boost">Активация буста 2x...</string>
+    <string name="activation_error">Ошибка активации</string>
+    <!-- Overlay Layout -->
+    <string name="status_waiting">Ожидание</string>
+    <string name="modes">Режимы:</string>
+    <string name="auto_features_short">Авто:</string>
+    <string name="quick_boost_launch">Быстрый запуск бустов:</string>
+    <!-- Dialog Tap to Edit -->
+    <!-- Dialog Tap to Edit Drones -->
+    <!-- Dialog Boost Preset -->
+    <!-- Main Activity -->
+    <string name="settings_title_colon">Настройки:</string>
+    <string name="chicken_timer_ms">Таймер куриц (мс)</string>
+    <string name="boost_interval_sec">Интервал бустов (сек)</string>
+    <!-- Toggle states -->
+    <!-- Status Messages -->
+    <string name="status_resting">Отдых...</string>
+    <string name="status_red_zone">Красная зона! Отдых %dс...</string>
+    <string name="status_checking_indicator">Проверка индикатора...</string>
+    <string name="status_checking_boosts">Проверка бустов</string>
+    <string name="status_finding_gift">Поиск подарка...</string>
+    <string name="status_collecting_gift">Сбор подарка...</string>
+    <string name="status_screenshots_unavailable">Скриншоты недоступны! Режим таймера</string>
+    <string name="notification_stop">Стоп</string>
+    <!-- Gift Mode -->
+    <string name="gift_check_every">Проверка каждые %d секунд</string>
+    <string name="gift_no_cv_desc">Без CV: клик по фиксированным координатам</string>
+    <string name="gift_click_coords">Клик по координатам каждые %d секунд</string>
+    <!-- Accessibility -->
+    <string name="accessibility_enable_hint">Найдите "Egg Inc Autoclicker" и включите сервис</string>
+    <!-- Boost Presets (data) -->
+</resources>

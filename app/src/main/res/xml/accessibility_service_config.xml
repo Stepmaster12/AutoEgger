@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:description="@string/accessibility_service_description"
+    android:packageNames="com.auxbrain.egginc"
+    android:accessibilityEventTypes="typeAllMask"
+    android:accessibilityFlags="flagDefault|flagIncludeNotImportantViews|flagReportViewIds"
+    android:canRetrieveWindowContent="true"
+    android:canPerformGestures="true"
+    android:canTakeScreenshot="true"
+    tools:ignore="UnusedAttribute"
+    android:settingsActivity="com.egginc.autoclicker.MainActivity" />

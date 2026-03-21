@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_eggs_pattern"
+    android:fillViewport="true">
+
+<LinearLayout
+    android:id="@+id/main_content_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:layout_gravity="center_horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_main_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/btn_settings"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/app_name"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="#FF6B35"
+            android:translationX="14dp" />
+
+        <ImageButton
+            android:id="@+id/btn_settings"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_settings"
+            android:padding="4dp"
+            android:contentDescription="@string/settings"
+            app:tint="#FF6B35" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_subtitle"
+        android:textSize="12sp"
+        android:textColor="#888888"
+        android:layout_marginBottom="32dp"
+        android:textAlignment="center" />
+
+    <!-- Статус разрешений -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#1E1E1E"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_overlay_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/overlay_status"
+                android:textSize="14sp"
+                android:textColor="#F44336" />
+
+            <Button
+                android:id="@+id/btn_request_overlay"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/grant_permission"
+                android:textSize="12sp"
+                android:backgroundTint="#2196F3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_app_settings_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/app_settings_status"
+                android:textSize="14sp"
+                android:textColor="#FFB74D" />
+
+            <Button
+                android:id="@+id/btn_open_app_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/open_settings"
+                android:textSize="12sp"
+                android:backgroundTint="#FF9800" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_app_settings_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_settings_hint_dots"
+            android:textSize="11sp"
+            android:textColor="#888888"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_accessibility_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/accessibility_status"
+                android:textSize="14sp"
+                android:textColor="#F44336"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+            <Button
+                android:id="@+id/btn_request_accessibility"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/enable"
+                android:textSize="12sp"
+                android:backgroundTint="#2196F3" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_permission_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/permission_progress_0_3"
+            android:textSize="12sp"
+            android:textColor="#AAAAAA" />
+
+        <ProgressBar
+            android:id="@+id/progress_permission_steps"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_marginTop="6dp"
+            android:max="4"
+            android:progress="0"
+            android:progressTint="#4CAF50"
+            android:progressBackgroundTint="#333333" />
+
+        <Button
+            android:id="@+id/btn_next_permission_step"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/permission_next_step"
+            android:textSize="12sp"
+            android:backgroundTint="#2196F3" />
+    </LinearLayout>
+
+    <!-- Авто-вызов куриц -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#1E1E1E"
+        android:padding="16dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auto_chicken_title"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FF6B35"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Обычные настройки (будут сереть при умном режиме) -->
+        <LinearLayout
+            android:id="@+id/layout_manual_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/swipe_duration"
+                    android:textColor="#CCCCCC"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/et_swipe_duration"
+                    style="@style/CompactNumberInput"
+                    android:layout_width="80dp"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:maxLength="2"
+                    android:hint="@string/swipe_duration"
+                    android:importantForAutofill="no"
+                    android:textColor="#FFFFFF"
+                    android:background="#333333"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/rest_duration"
+                    android:textColor="#CCCCCC"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/et_rest_duration"
+                    style="@style/CompactNumberInput"
+                    android:layout_width="80dp"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:maxLength="2"
+                    android:hint="@string/rest_duration"
+                    android:importantForAutofill="no"
+                    android:textColor="#FFFFFF"
+                    android:background="#333333"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chicken_hint"
+                android:textSize="11sp"
+                android:textColor="#888888"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp" />
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#333333"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Умный режим -->
+        <CheckBox
+            android:id="@+id/cb_smart_chicken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/smart_mode"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/smart_mode_desc"
+            android:textSize="11sp"
+            android:textColor="#888888"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Настройка отката (изначально скрыта/серая) -->
+        <LinearLayout
+            android:id="@+id/layout_cooldown_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:alpha="0.5"
+            android:enabled="false">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/red_cooldown"
+                android:textColor="#CCCCCC"
+                android:textSize="13sp" />
+
+            <EditText
+                android:id="@+id/et_red_cooldown"
+                style="@style/CompactNumberInput"
+                android:layout_width="80dp"
+                android:inputType="number"
+                android:digits="0123456789"
+                android:maxLength="2"
+                android:hint="@string/red_cooldown"
+                android:importantForAutofill="no"
+                android:textColor="#FFFFFF"
+                android:background="#333333"
+                android:textAlignment="center"
+                android:enabled="false" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_cooldown_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/red_cooldown_hint"
+            android:textSize="11sp"
+            android:textColor="#888888"
+            android:layout_marginTop="8dp"
+            android:alpha="0.5" />
+    </LinearLayout>
+
+    <!-- Быстрые настройки (отключено - не используются)
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#1E1E1E"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_title_colon"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/chicken_timer_ms"
+                android:textColor="#CCCCCC"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/et_chicken_timer"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="50"
+                android:textColor="#FFFFFF"
+                android:textAlignment="center"
+                android:background="#333333"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/boost_interval_sec"
+                android:textColor="#CCCCCC"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/et_boost_interval"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="30"
+                android:textColor="#FFFFFF"
+                android:textAlignment="center"
+                android:background="#333333"
+                android:padding="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+    -->
+
+    <!-- Настройка режима подарка -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#2D2D2D"
+        android:padding="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gift_mode_title"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FF9800"
+            android:layout_marginBottom="8dp" />
+
+        <CheckBox
+            android:id="@+id/cb_use_cv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/use_cv"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_gift_mode_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cv_desc"
+            android:textSize="11sp"
+            android:textColor="#AAAAAA"
+            android:layout_marginTop="4dp" />
+
+        <!-- Интервал проверки подарка -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/gift_interval"
+                android:textColor="#CCCCCC"
+                android:textSize="13sp" />
+
+            <EditText
+                android:id="@+id/et_gift_interval"
+                style="@style/CompactNumberInput"
+                android:layout_width="80dp"
+                android:inputType="number"
+                android:digits="0123456789"
+                android:maxLength="3"
+                android:imeOptions="actionDone"
+                android:hint="@string/gift_interval"
+                android:importantForAutofill="no"
+                android:textColor="#FFFFFF"
+                android:background="#333333"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_gift_interval_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gift_interval_hint"
+            android:textSize="11sp"
+            android:textColor="#888888"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/gift_warning"
+            android:textColor="#FF6B35"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- Кнопка запуска оверлея -->
+    <Button
+        android:id="@+id/btn_start_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/launch_overlay"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="#4CAF50"
+        android:enabled="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launch_hint"
+        android:textSize="12sp"
+        android:textColor="#888888"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center" />
+
+</LinearLayout>
+
+</ScrollView>

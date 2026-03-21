@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Разрешения для автокликера -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <queries>
+        <package android:name="com.auxbrain.egginc" />
+    </queries>
+
+    <application
+        android:name=".BaseApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.EggIncAutoclicker"
+        tools:targetApi="31">
+
+        <!-- Главная Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="locale|layoutDirection"
+            android:theme="@style/Theme.EggIncAutoclicker">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Activity настроек -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="@string/settings"
+            android:parentActivityName=".MainActivity"
+            android:configChanges="locale|layoutDirection"
+            android:theme="@style/Theme.EggIncAutoclicker" />
+
+        <!-- Accessibility Service для симуляции кликов -->
+        <service
+            android:name=".service.ClickerAccessibilityService"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <!-- Foreground Service для работы автокликера -->
+        <service
+            android:name=".service.AutoclickerService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse" />
+
+        <!-- Сервис для плавающего окна -->
+        <service
+            android:name=".service.OverlayService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse" />
+
+    </application>
+    
+    <!--
+    Egg Inc Autoclicker - Android automation tool for Egg Inc game
+    
+    Features:
+    - Auto chicken farming with smart red zone detection
+    - Auto gift collection with computer vision
+    - Auto research buying
+    - Auto 2x money boost activation
+    - Auto drone catching via diagonal swipes
+    
+    Requirements:
+    - Android 7.0+ (API 24)
+    - Accessibility Service permission
+    - Overlay permission
+    
+    Note: This is an automation tool for educational purposes.
+    Use at your own risk and respect game terms of service.
+    -->
+
+</manifest>

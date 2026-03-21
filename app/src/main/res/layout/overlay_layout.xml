@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/overlay_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_overlay"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:id="@+id/overlay_content"
+        android:layout_width="248dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Заголовок с кнопками управления окном -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/overlay_title"
+                android:textColor="#FF6B35"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btn_minimize"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="#33FFFFFF"
+                android:text="@string/minimize"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="@string/minimize" />
+
+            <TextView
+                android:id="@+id/btn_close"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="#33FFFFFF"
+                android:text="@string/close"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="@string/close" />
+        </LinearLayout>
+
+        <!-- Статус -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:background="#333333"
+            android:padding="8dp">
+
+            <View
+                android:id="@+id/status_indicator"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="#FFC107"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status_waiting"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Режимы работы -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/modes"
+            android:textColor="#AAAAAA"
+            android:textSize="11sp"
+            android:layout_marginBottom="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/btn_mode_chicken"
+                style="@style/ModeButton"
+                android:layout_weight="1"
+                android:text="@string/icon_chicken" />
+
+            <Button
+                android:id="@+id/btn_mode_gift"
+                style="@style/ModeButton"
+                android:text="@string/icon_gift"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btn_mode_all"
+                style="@style/ModeButton"
+                android:text="@string/icon_bolt"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <!-- Авто-фичи (показываются только если включены в настройках) -->
+        <LinearLayout
+            android:id="@+id/layout_auto_features"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_features_short"
+                android:textSize="11sp"
+                android:textColor="#AAAAAA"
+                android:layout_marginBottom="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:baselineAligned="false">
+
+                <ToggleButton
+                    android:id="@+id/toggle_research"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_weight="1"
+                    android:textOn="@string/toggle_research_on"
+                    android:textOff="@string/toggle_research_off"
+                    android:textSize="10sp"
+                    android:textAllCaps="false"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:background="@drawable/bg_mode_button"
+                    android:textColor="#FFFFFF"
+                    android:visibility="gone" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_boosts"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:textOn="@string/toggle_boost_on"
+                    android:textOff="@string/toggle_boost_off"
+                    android:textSize="10sp"
+                    android:textAllCaps="false"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:background="@drawable/bg_mode_button"
+                    android:textColor="#FFFFFF"
+                    android:visibility="gone" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_drones"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:textOn="@string/toggle_drones_on"
+                    android:textOff="@string/toggle_drones_off"
+                    android:textSize="10sp"
+                    android:textAllCaps="false"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:background="@drawable/bg_mode_button"
+                    android:textColor="#FFFFFF"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- Быстрые кнопки авто-бустов -->
+            <LinearLayout
+                android:id="@+id/layout_boost_quick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/quick_boost_launch"
+                    android:textSize="10sp"
+                    android:textColor="#FF9800"
+                    android:layout_marginBottom="4dp" />
+
+                <!-- Первый ряд -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
+
+                    <Button
+                        android:id="@+id/btn_boost_preset_1"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="@string/icon_egg"
+                        android:textSize="20sp"
+                        android:backgroundTint="#FF6B35"
+                        android:padding="0dp" />
+
+                    <Button
+                        android:id="@+id/btn_boost_preset_2"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/icon_chart"
+                        android:textSize="20sp"
+                        android:backgroundTint="#2196F3"
+                        android:padding="0dp" />
+
+                    <Button
+                        android:id="@+id/btn_boost_preset_3"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/icon_note"
+                        android:textSize="20sp"
+                        android:backgroundTint="#4CAF50"
+                        android:padding="0dp" />
+                </LinearLayout>
+
+                <!-- Второй ряд (кастомные) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_boost_custom_1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="@string/icon_wrench"
+                        android:textSize="16sp"
+                        android:enabled="false"
+                        android:backgroundTint="#424242"
+                        android:padding="0dp" />
+
+                    <Button
+                        android:id="@+id/btn_boost_custom_2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/icon_wrench"
+                        android:textSize="16sp"
+                        android:enabled="false"
+                        android:backgroundTint="#424242"
+                        android:padding="0dp" />
+
+                    <Button
+                        android:id="@+id/btn_boost_custom_3"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/icon_wrench"
+                        android:textSize="16sp"
+                        android:enabled="false"
+                        android:backgroundTint="#424242"
+                        android:padding="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Кнопки управления -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="@string/start"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_button_start" />
+
+            <Button
+                android:id="@+id/btn_stop"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/stop"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_button_stop"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Мини-версия (когда свернуто) -->
+        <LinearLayout
+            android:id="@+id/minimized_view"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/bg_button_start"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/minimized_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/icon_egg"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

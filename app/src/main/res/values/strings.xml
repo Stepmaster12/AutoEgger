@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Egg Inc Autoclicker</string>
+    <string name="app_subtitle">AutoEgger</string>
+    <string name="overlay_title">Egg Inc Bot</string>
+    <string name="icon_chicken">🐔</string>
+    <string name="icon_gift">🎁</string>
+    <string name="icon_bolt">⚡</string>
+    <string name="icon_egg">🥚</string>
+    <string name="icon_chart">📊</string>
+    <string name="icon_note">📝</string>
+    <string name="icon_wrench">🔧</string>
+    <!-- Accessibility Service -->
+    <string name="accessibility_service_description">This service is required for automating clicks in Egg Inc game. It simulates screen touches for chicken farming, boost activation and gift collection.</string>
+    <!-- Main Activity -->
+    <string name="grant_permission">Grant</string>
+    <string name="launch_overlay">▶ START OVERLAY</string>
+    <string name="status">Status</string>
+    <string name="overlay_status">Overlay</string>
+    <string name="app_settings_status">App settings</string>
+    <string name="app_settings_status_required">App settings (allow restricted settings)</string>
+    <string name="app_settings_status_done">App settings ready</string>
+    <string name="app_settings_status_locked">App settings (locked)</string>
+    <string name="app_settings_hint_dots">Tip: first press "Grant" for Accessibility and open the service. After the warning appears, return to app settings, open the top-right menu (⋮), and choose "Allow restricted settings".</string>
+    <string name="accessibility_status">Accessibility</string>
+    <string name="accessibility_locked">Accessibility (locked)</string>
+    <string name="open_settings">Open settings</string>
+    <string name="permission_progress_0_3">Permission setup: 0/4</string>
+    <string name="permission_progress_format">Permission setup: %1$d/4</string>
+    <string name="permission_next_step">Next step</string>
+    <string name="permission_next_overlay">Step 1: Grant overlay</string>
+    <string name="permission_next_accessibility_prime">Step 2: Open accessibility</string>
+    <string name="permission_next_app_settings">Step 3: Open app settings</string>
+    <string name="permission_next_accessibility_enable">Step 4: Enable accessibility</string>
+    <string name="permissions_ready">All permissions are ready</string>
+    <!-- Chicken Settings -->
+    <string name="swipe_duration">Hold (sec)</string>
+    <string name="rest_duration">Rest (sec)</string>
+    <string name="smart_mode">Smart Mode</string>
+    <string name="smart_mode_desc">Auto-stop on red zone</string>
+    <string name="red_cooldown">Cooldown after red (sec)</string>
+    <!-- Gift Settings -->
+    <string name="gift_interval">Gift interval (sec)</string>
+    <string name="use_cv">Use CV (Android 11+)</string>
+    <string name="cv_desc">Auto-detect gift box with computer vision</string>
+    <!-- Overlay -->
+    <string name="start">▶ START</string>
+    <string name="stop">⏹ STOP</string>
+    <string name="settings">⚙ Settings</string>
+    <string name="close">✕</string>
+    <string name="minimize">−</string>
+    <!-- Toggle buttons -->
+    <string name="toggle_research_on">🔬 Research ON</string>
+    <string name="toggle_research_off">🔬 Research OFF</string>
+    <string name="toggle_boost_on">💰 2x ON</string>
+    <string name="toggle_boost_off">💰 2x OFF</string>
+    <string name="toggle_drones_on">🚁 Drones ON</string>
+    <string name="toggle_drones_off">🚁 Drones OFF</string>
+    <!-- Status -->
+    <string name="status_running">Running</string>
+    <string name="status_paused_boost">Pause (boost 2x)</string>
+    <string name="status_paused_research">Pause (research/boost)</string>
+    <string name="status_stopped">Stopped</string>
+    <string name="status_chicken_farming">Chicken farming</string>
+    <string name="status_drone_mode">🚁 Drone mode</string>
+    <!-- Notifications -->
+    <string name="notification_title">Egg Inc Autoclicker</string>
+    <string name="notification_text">Autoclicker is active</string>
+    <string name="channel_name">Autoclicker Service</string>
+    <string name="channel_description">Notifications about autoclicker status</string>
+    <string name="channel_overlay_name">Overlay</string>
+    <string name="channel_overlay_description">Notification required for overlay to work</string>
+    <string name="overlay_active">Overlay active</string>
+    <!-- Settings Activity -->
+    <string name="settings_title">Settings</string>
+    <string name="back">🔙 Back</string>
+    <string name="save">✓ Save</string>
+    <string name="reset">Reset</string>
+    <!-- Auto Features -->
+    <string name="auto_research">🔬 Auto Research</string>
+    <string name="auto_boost">💰 Auto Boost 2x Money</string>
+    <string name="auto_drones">🚁 Auto Drones</string>
+    <string name="research_interval">Check interval (sec)</string>
+    <string name="boost_interval">Boost interval (min)</string>
+    <string name="swipes_up">Swipes up</string>
+    <string name="swipes_down">Swipes down</string>
+    <!-- Messages -->
+    <string name="toast_permission_overlay">Please grant overlay permission first!</string>
+    <string name="toast_permission_accessibility">Please enable Accessibility service first!</string>
+    <string name="launch_error_message">Launch error: %1$s</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="toast_settings_saved">Settings saved!</string>
+    <string name="toast_all_stopped">All functions stopped</string>
+    <string name="toast_drone_mode_active">🚁 Drone mode: press START</string>
+    <string name="toast_stop_first">❌ Press STOP first!</string>
+    <string name="toast_boost_started">Auto-boost 2x: start in 30 sec, then every %d min</string>
+    <string name="toast_boost_activated">✓ Boost 2x activated!</string>
+    <!-- Tap to Edit -->
+    <!-- Drone Points -->
+    <string name="toast_disable_drones_first">❌ Disable drone mode first!</string>
+    <string name="toast_drone_mode_start">🚁 Drone mode: press START</string>
+    <!-- Dialogs -->
+    <string name="dialog_cancel">Cancel</string>
+    <!-- Language -->
+    <string name="language">Language</string>
+    <!-- Edit mode hint -->
+    <string name="interval_min_format">Interval: %d min</string>
+    <string name="interval_sec_format">Check interval: %d sec</string>
+    <!-- Additional strings for layouts -->
+    <string name="enable">Enable</string>
+    <string name="auto_chicken_title">🐔 Auto Chicken</string>
+    <string name="chicken_hint">If chickens are in red zone - increase rest. If slow growth - decrease.</string>
+    <string name="gift_mode_title">🎁 Gift Collection Mode:</string>
+    <string name="gift_interval_hint">Click by coordinates every N seconds</string>
+    <string name="gift_warning">⚠️ Important: If not using CV, position screen so clicks don\'t hit lab, parking, coops!</string>
+    <string name="launch_hint">Launch Egg Inc, then press the button above</string>
+    <string name="auto_features_title">🧪 Auto Features (BETA)</string>
+    <string name="auto_research_desc">Automatically buys available research</string>
+    <string name="timer_conflict_warning">⚠️ May conflict with gift timer</string>
+    <string name="timer_conflict_detailed">⚠️ Interval (%1$d sec) matches or is multiple of gift interval (%2$d sec). During research purchase, auto-gifts may fail.</string>
+    <string name="lab_scroll_settings">Lab scroll settings:</string>
+    <string name="swipes_hint">Increase if not all research is bought</string>
+    <string name="research_strict_filter">Strict research button filter</string>
+    <string name="research_strict_filter_desc">More accurate, less false taps. Slightly higher CPU usage.</string>
+    <string name="research_fast_mode">Fast research mode</string>
+    <string name="research_fast_mode_desc">Reduces delays between click barrages. Can increase false taps on weak devices.</string>
+    <string name="auto_boost_desc">Auto-activates Video Doubler</string>
+    <string name="auto_drones_desc">Fast swipes for drone catching</string>
+    <string name="auto_drones_conflict">⚠️ Disables other auto-features</string>
+    <string name="info">Information</string>
+    <string name="interval_min">Interval: %d min</string>
+    <string name="interval_sec">Interval: %d sec</string>
+    <string name="current_gift_interval_full">Current gift interval: %d sec (set in main menu)</string>
+    <!-- Layout strings added by subagent -->
+    <string name="auto_features_warning">Experimental features. May work unstable.</string>
+    <string name="gift_interval_current">Current gift interval: 60 sec</string>
+    <string name="research_interval_range">Min: 30 sec | Recommended: 90 sec | Max: 300 sec</string>
+    <string name="auto_boost_pause_warning">During boost activation (≈4 sec) other features pause</string>
+    <!-- More layout strings -->
+    <string name="red_cooldown_hint">Waiting time after red strip appears</string>
+    <string name="preset_title">⚙ Quick Presets</string>
+    <string name="preset_desc">Applies recommended values for gifts and research timers. Boost timer and lab swipes are kept unchanged.</string>
+    <string name="preset_safe">Safe</string>
+    <string name="preset_balance">Balance</string>
+    <string name="preset_aggressive">Aggressive</string>
+    <string name="preset_applied">Preset applied: %1$s</string>
+    <string name="unsaved_changes_title">Unsaved changes</string>
+    <string name="unsaved_changes_message">You changed settings but did not save. Save before exit?</string>
+    <string name="save_and_exit">Save and exit</string>
+    <string name="exit_without_saving">Exit without saving</string>
+    <string name="cv_mode_title">🧠 CV Detection Mode</string>
+    <string name="cv_mode_desc">Lite uses less CPU. Accurate runs deeper checks and can detect gifts more reliably.</string>
+    <string name="cv_mode_lite">Lite (Fast)</string>
+    <string name="cv_mode_accurate">Accurate (Heavy)</string>
+    <string name="boost_interval_range">Min: 1 min | Recommended: 55 min | Max: 60 min</string>
+    <string name="boost_first_activation">First activation after 30 sec</string>
+    <string name="auto_boost_started">Auto-boost 2x started. First activation in 30 sec...</string>
+    <string name="auto_boost_error_generic">Auto-boost error: %s</string>
+    <string name="activating_boost">Activating boost 2x...</string>
+    <string name="activation_error">Activation error</string>
+    <!-- Overlay Layout -->
+    <string name="status_waiting">Waiting</string>
+    <string name="modes">Modes:</string>
+    <string name="auto_features_short">Auto:</string>
+    <string name="quick_boost_launch">Quick boost launch:</string>
+    <!-- Dialog Tap to Edit -->
+    <!-- Dialog Tap to Edit Drones -->
+    <!-- Dialog Boost Preset -->
+    <!-- Main Activity -->
+    <string name="settings_title_colon">Settings:</string>
+    <string name="chicken_timer_ms">Chicken timer (ms)</string>
+    <string name="boost_interval_sec">Boost interval (sec)</string>
+    <!-- Toggle states -->
+    <!-- Status Messages -->
+    <string name="status_resting">Resting...</string>
+    <string name="status_red_zone">Red zone! Rest %ds...</string>
+    <string name="status_checking_indicator">Checking indicator...</string>
+    <string name="status_checking_boosts">Checking boosts</string>
+    <string name="status_finding_gift">Finding gift...</string>
+    <string name="status_collecting_gift">Collecting gift...</string>
+    <string name="status_screenshots_unavailable">Screenshots unavailable! Timer mode</string>
+    <string name="notification_stop">Stop</string>
+    <!-- Gift Mode -->
+    <string name="gift_check_every">Check every %d seconds</string>
+    <string name="gift_no_cv_desc">Without CV: click at fixed coordinates</string>
+    <string name="gift_click_coords">Click by coordinates every %d seconds</string>
+    <!-- Accessibility -->
+    <string name="accessibility_enable_hint">Find "Egg Inc Autoclicker" and enable service</string>
+    <!-- Fallback defaults required by locale-specific resources -->
+    <string name="dialog_reset_details">Reset ALL settings to default?\n\nWill be reset:\n• Click point coordinates\n• Drone coordinates\n• Auto-research and interval\n• Lab scroll settings\n• Other auto-features</string>
+    <string name="dialog_boost_title">Auto Boost 2x Money</string>
+    <string name="dialog_boost_message">This feature automatically activates the free "Video Doubler" boost every N minutes.\n\nIMPORTANT:\nDisable ads in game settings for this to work.\n\nHow it works:\n1. Opens boost menu\n2. Clicks FREE button\n3. Closes menu\n4. Waits for interval</string>
+    <string name="dialog_understand">Got it</string>
+    <string name="language_ru">Russian</string>
+</resources>
