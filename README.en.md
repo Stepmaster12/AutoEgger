@@ -29,7 +29,7 @@ Android 13+ permission flow:
 3. Open App Settings, tap `⋮` (top-right), choose `Allow restricted settings`.
 4. Return to Accessibility and enable the service.
 
-![Android 13+ permission walkthrough](./docs/permissions_flow.gif)
+<p align="center"><img src="./docs/permissions_flow.gif" alt="Android 13+ permission walkthrough" width="360"></p>
 
 ## Compatibility
 
@@ -51,37 +51,37 @@ Android 13+ permission flow:
 
 - `Auto Chicken`: normal mode and smart pause on red zone
 
-![Auto Chicken demo](./docs/gifs/auto_chicken.gif)
+<p align="center"><img src="./docs/gifs/auto_chicken.gif" alt="Auto Chicken demo" width="360"></p>
 
 - `Auto Gift`: CV object detection + timer-based fallback
 
-![Auto Gift demo](./docs/gifs/auto_gift.gif)
+<p align="center"><img src="./docs/gifs/auto_gift.gif" alt="Auto Gift demo" width="360"></p>
 
 - `Auto Research`: green-button scanning, swipes, interval
 
-![Auto Research demo](./docs/gifs/auto_research.gif)
+<p align="center"><img src="./docs/gifs/auto_research.gif" alt="Auto Research demo" width="360"></p>
 
 - `Auto Boost 2x`: scheduled Video Doubler activation
 
-![Auto Boost demo](./docs/gifs/auto_boost.gif)
+<p align="center"><img src="./docs/gifs/auto_boost.gif" alt="Auto Boost demo" width="360"></p>
 
 - `Auto Drones`: swipe-based catch routine
 
-![Auto Drones demo](./docs/gifs/auto_drones.gif)
+<p align="center"><img src="./docs/gifs/auto_drones.gif" alt="Auto Drones demo" width="360"></p>
 
 ## Screenshots
 
 Main screen:
 
-![Main screen](./docs/images/main-screen.png)
+<p align="center"><img src="./docs/images/main-screen.png" alt="Main screen" width="280"></p>
 
 Settings screen:
 
-![Settings screen](./docs/images/settings-screen.png)
+<p align="center"><img src="./docs/images/settings-screen.png" alt="Settings screen" width="280"></p>
 
 Auto-features panel (expanded):
 
-![Auto-features expanded](./docs/images/settings-auto-features-expanded.png)
+<p align="center"><img src="./docs/images/settings-auto-features-expanded.png" alt="Auto-features expanded" width="280"></p>
 
 ## Quick Start
 

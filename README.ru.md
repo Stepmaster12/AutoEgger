@@ -29,7 +29,7 @@ Android-приложение для автоматизации рутины в *
 3. Откройте настройки приложения, нажмите `⋮` (справа сверху), выберите `Allow restricted settings`.
 4. Вернитесь в Accessibility и включите сервис.
 
-![Поток разрешений Android 13+](./docs/permissions_flow.gif)
+<p align="center"><img src="./docs/permissions_flow.gif" alt="Поток разрешений Android 13+" width="360"></p>
 
 ## Compatibility
 
@@ -51,37 +51,37 @@ Android-приложение для автоматизации рутины в *
 
 - `Авто-курицы`: обычный и умный режим (пауза при красной зоне)
 
-![Демо авто-куриц](./docs/gifs/auto_chicken.gif)
+<p align="center"><img src="./docs/gifs/auto_chicken.gif" alt="Демо авто-куриц" width="360"></p>
 
 - `Авто-подарки`: CV-поиск объекта + таймерный режим
 
-![Демо авто-подарков](./docs/gifs/auto_gift.gif)
+<p align="center"><img src="./docs/gifs/auto_gift.gif" alt="Демо авто-подарков" width="360"></p>
 
 - `Авто-исследования`: поиск зелёных кнопок, свайпы, интервал
 
-![Демо авто-исследований](./docs/gifs/auto_research.gif)
+<p align="center"><img src="./docs/gifs/auto_research.gif" alt="Демо авто-исследований" width="360"></p>
 
 - `Авто-буст 2x`: автоприменение Video Doubler по интервалу
 
-![Демо авто-буста](./docs/gifs/auto_boost.gif)
+<p align="center"><img src="./docs/gifs/auto_boost.gif" alt="Демо авто-буста" width="360"></p>
 
 - `Авто-дроны`: свайповый режим ловли
 
-![Демо авто-дронов](./docs/gifs/auto_drones.gif)
+<p align="center"><img src="./docs/gifs/auto_drones.gif" alt="Демо авто-дронов" width="360"></p>
 
 ## Screenshots
 
 Главный экран:
 
-![Главный экран](./docs/images/main-screen.png)
+<p align="center"><img src="./docs/images/main-screen.png" alt="Главный экран" width="280"></p>
 
 Экран настроек:
 
-![Экран настроек](./docs/images/settings-screen.png)
+<p align="center"><img src="./docs/images/settings-screen.png" alt="Экран настроек" width="280"></p>
 
 Панель авто-функций (развёрнута):
 
-![Развёрнутые авто-функции](./docs/images/settings-auto-features-expanded.png)
+<p align="center"><img src="./docs/images/settings-auto-features-expanded.png" alt="Развёрнутые авто-функции" width="280"></p>
 
 ## Quick Start
 
