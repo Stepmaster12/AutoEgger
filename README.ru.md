@@ -73,15 +73,15 @@ Android-приложение для автоматизации рутины в *
 
 Главный экран:
 
-<p align="center"><img src="./docs/images/main-screen.png" alt="Главный экран" width="280"></p>
+<p align="center"><img src="./docs/images/main-screen.png" alt="Главный экран" width="360"></p>
 
 Экран настроек:
 
-<p align="center"><img src="./docs/images/settings-screen.png" alt="Экран настроек" width="280"></p>
+<p align="center"><img src="./docs/images/settings-screen.png" alt="Экран настроек" width="360"></p>
 
 Панель авто-функций (развёрнута):
 
-<p align="center"><img src="./docs/images/settings-auto-features-expanded.png" alt="Развёрнутые авто-функции" width="280"></p>
+<p align="center"><img src="./docs/images/settings-auto-features-expanded.png" alt="Развёрнутые авто-функции" width="360"></p>
 
 ## Quick Start
 

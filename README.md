@@ -79,15 +79,15 @@ Android 13+ permission flow:
 
 Main screen:
 
-<p align="center"><img src="./docs/images/main-screen.png" alt="Main screen" width="280"></p>
+<p align="center"><img src="./docs/images/main-screen.png" alt="Main screen" width="360"></p>
 
 Settings screen:
 
-<p align="center"><img src="./docs/images/settings-screen.png" alt="Settings screen" width="280"></p>
+<p align="center"><img src="./docs/images/settings-screen.png" alt="Settings screen" width="360"></p>
 
 Auto-features panel (expanded):
 
-<p align="center"><img src="./docs/images/settings-auto-features-expanded.png" alt="Auto-features expanded" width="280"></p>
+<p align="center"><img src="./docs/images/settings-auto-features-expanded.png" alt="Auto-features expanded" width="360"></p>
 
 ## Quick Start
 
