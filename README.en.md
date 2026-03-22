@@ -9,6 +9,12 @@
   </a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/Stepmaster12/AutoEgger/releases">
+    <img src="https://img.shields.io/badge/Download-Latest%20APK-22C55E?style=for-the-badge&logo=android&logoColor=white" alt="Download Latest APK">
+  </a>
+</p>
+
 Android app for automating routine actions in **Egg Inc**  
 Main goal: automate routine gameplay as much as possible so you can leave the phone overnight and wake up to a big progress jump.
 
@@ -85,7 +91,7 @@ Auto-features panel (expanded):
 
 ## Quick Start
 
-1. Install APK.
+1. Install APK from [Releases](https://github.com/Stepmaster12/AutoEgger/releases).
 2. Grant overlay and accessibility permissions.
 3. Open settings and tune intervals/modes.
 4. Launch overlay and press `START`.

@@ -9,6 +9,12 @@
   </a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/Stepmaster12/AutoEgger/releases">
+    <img src="https://img.shields.io/badge/Скачать-Latest%20APK-22C55E?style=for-the-badge&logo=android&logoColor=white" alt="Скачать Latest APK">
+  </a>
+</p>
+
 Android-приложение для автоматизации рутины в **Egg Inc**  
 Основной фокус это максимально автоматизировать все рутинные задачи, чтобы можно было спокойно оставить телефон на ночь и наслаждаться на следующее утро карманами, полными яиц.
 
@@ -85,7 +91,7 @@ Android-приложение для автоматизации рутины в *
 
 ## Quick Start
 
-1. Установите APK.
+1. Установите APK из [Releases](https://github.com/Stepmaster12/AutoEgger/releases).
 2. Выдайте приложению разрешения (оверлей + accessibility).
 3. Откройте настройки и проверьте интервалы/режимы.
 4. Запустите оверлей и нажмите `START`.
