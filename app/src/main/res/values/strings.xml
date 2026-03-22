@@ -5,6 +5,7 @@
     <string name="overlay_title">Egg Inc Bot</string>
     <string name="icon_chicken">🐔</string>
     <string name="icon_gift">🎁</string>
+    <string name="icon_combo">🐔🎁</string>
     <string name="icon_bolt">⚡</string>
     <string name="icon_egg">🥚</string>
     <string name="icon_chart">📊</string>
@@ -187,7 +188,7 @@
     <!-- Accessibility -->
     <string name="accessibility_enable_hint">Find "Egg Inc Autoclicker" and enable service</string>
     <!-- Fallback defaults required by locale-specific resources -->
-    <string name="dialog_reset_details">Reset ALL settings to default?\n\nWill be reset:\n• Click point coordinates\n• Drone coordinates\n• Auto-research and interval\n• Lab scroll settings\n• Other auto-features</string>
+    <string name="dialog_reset_details">Reset ALL settings to default?\n\nWill be reset:\n• Auto-research and interval\n• Lab swipe settings\n• CV mode and filters\n• Other auto-features</string>
     <string name="dialog_boost_title">Auto Boost 2x Money</string>
     <string name="dialog_boost_message">This feature automatically activates the free "Video Doubler" boost every N minutes.\n\nIMPORTANT:\nDisable ads in game settings for this to work.\n\nHow it works:\n1. Opens boost menu\n2. Clicks FREE button\n3. Closes menu\n4. Waits for interval</string>
     <string name="dialog_understand">Got it</string>

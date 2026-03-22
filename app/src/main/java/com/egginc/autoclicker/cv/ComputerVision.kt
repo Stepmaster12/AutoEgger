@@ -26,15 +26,6 @@ class ComputerVision {
             Pair(-10, 0), Pair(10, 0), Pair(0, -10), Pair(0, 10)
         )
         
-        init {
-            // Инициализация OpenCV
-            try {
-                System.loadLibrary("opencv_java4")
-                Log.d(TAG, "OpenCV loaded successfully")
-            } catch (e: UnsatisfiedLinkError) {
-                Log.e(TAG, "Failed to load OpenCV", e)
-            }
-        }
     }
     
     /**
@@ -58,6 +49,8 @@ class ComputerVision {
             val accurateMode = cvMode.equals("accurate", ignoreCase = true)
             // ROI: ожидаем верхний правый сектор, но даем люфт вокруг ожидаемой точки.
             val roi = buildSearchRoi(bitmap.width, bitmap.height, centerX, centerY)
+            val allowedDx = (bitmap.width * if (accurateMode) 0.34f else 0.30f).toInt().coerceIn(120, 560)
+            val allowedDy = (bitmap.height * if (accurateMode) 0.24f else 0.20f).toInt().coerceIn(120, 700)
             var bestX = 0
             var bestY = 0
             var bestCheapScore = 0f
@@ -78,6 +71,7 @@ class ComputerVision {
             val cheapThreshold = if (accurateMode) 0.95f else 1.12f
             for (y in roi.top until roi.bottom step step) {
                 for (x in roi.left until roi.right step step) {
+                    if (abs(x - centerX) > allowedDx || abs(y - centerY) > allowedDy) continue
                     val pointScore = detectGiftByPointsScore(bitmap, x, y, checkPoints, config.colorTolerance)
                     if (pointScore < pointMin) continue
 
@@ -102,7 +96,8 @@ class ComputerVision {
             if (bestCheapScore < cheapThreshold) {
                 Log.d(
                     TAG,
-                    "Gift detect mode=$cvMode ROI=(${roi.left},${roi.top})-(${roi.right},${roi.bottom}), bestCheap=${"%.2f".format(bestCheapScore)}, accepted=false"
+                    "Gift detect mode=$cvMode ROI=(${roi.left},${roi.top})-(${roi.right},${roi.bottom}), " +
+                        "gate=±($allowedDx,$allowedDy), bestCheap=${"%.2f".format(bestCheapScore)}, accepted=false"
                 )
                 return GiftDetectionResult(false)
             }
@@ -151,6 +146,7 @@ class ComputerVision {
             Log.d(
                 TAG,
                 "Gift detect ROI=(${roi.left},${roi.top})-(${roi.right},${roi.bottom}), " +
+                    "gate=±($allowedDx,$allowedDy), " +
                     "mode=$cvMode, " +
                     "best=($bestX,$bestY) point=${"%.2f".format(bestPointScore)}, area=${"%.2f".format(bestAreaRatio)}, cheap=${"%.2f".format(bestCheapScore)}, " +
                     "tmpl=${"%.2f".format(templateScore)}, score=${"%.2f".format(finalScore)}, accepted=$accepted"
@@ -293,17 +289,27 @@ class ComputerVision {
         val expectedRight = min(width, expectedLeft + roiWidth)
         val expectedBottom = min(height, expectedTop + roiHeight)
 
-        // Страховочная зона: верхний правый сектор, где обычно находится подарок.
-        val defaultLeft = (width * 0.54f).toInt()
-        val defaultTop = (height * 0.03f).toInt()
+        // Страховочная зона: только верхний правый сектор, без нижней части экрана.
+        val defaultLeft = (width * 0.52f).toInt()
+        val defaultTop = (height * 0.02f).toInt()
         val defaultRight = (width * 0.99f).toInt()
-        val defaultBottom = (height * 0.44f).toInt()
+        val defaultBottom = (height * 0.33f).toInt()
 
-        val left = min(expectedLeft, defaultLeft).coerceAtLeast(0)
-        val top = min(expectedTop, defaultTop).coerceAtLeast(0)
-        val right = max(expectedRight, defaultRight).coerceAtMost(width)
-        val bottom = max(expectedBottom, defaultBottom).coerceAtMost(height)
-        return SearchRoi(left, top, right, bottom)
+        // Пересечение expected + default сильно снижает ложные срабатывания.
+        val ixLeft = max(expectedLeft, defaultLeft).coerceAtLeast(0)
+        val ixTop = max(expectedTop, defaultTop).coerceAtLeast(0)
+        val ixRight = min(expectedRight, defaultRight).coerceAtMost(width)
+        val ixBottom = min(expectedBottom, defaultBottom).coerceAtMost(height)
+
+        val ixWidth = ixRight - ixLeft
+        val ixHeight = ixBottom - ixTop
+        val minWidth = (width * 0.10f).toInt().coerceAtLeast(80)
+        val minHeight = (height * 0.06f).toInt().coerceAtLeast(80)
+        return if (ixWidth >= minWidth && ixHeight >= minHeight) {
+            SearchRoi(ixLeft, ixTop, ixRight, ixBottom)
+        } else {
+            SearchRoi(expectedLeft, expectedTop, expectedRight, expectedBottom)
+        }
     }
 
     private fun compareTemplateAtPoint(

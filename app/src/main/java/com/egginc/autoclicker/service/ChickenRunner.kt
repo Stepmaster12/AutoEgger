@@ -33,7 +33,9 @@ class ChickenRunner(
 ) {
     companion object {
         private const val TAG = "ChickenRunner"
+        private const val VERBOSE_LOG_INTERVAL_MS = 5000L
     }
+    private var lastVerboseLogMs: Long = 0L
 
     suspend fun runIteration(service: ClickerAccessibilityService) {
         if (isPausedProvider()) return
@@ -64,14 +66,16 @@ class ChickenRunner(
         val endX = scaleX(cfg.chickenButton.x + 30)
         val (screenWidth, screenHeight) = screenSizeProvider()
 
-        Log.d(
-            TAG,
-            "Manual chicken: screen=${screenWidth}x$screenHeight, base=${cfg.baseResolutionWidth}x${cfg.baseResolutionHeight}"
-        )
-        Log.d(
-            TAG,
-            "Manual chicken: original=(${cfg.chickenButton.x},${cfg.chickenButton.y}) -> scaled=($startX,$startY)"
-        )
+        if (shouldEmitVerboseLog()) {
+            Log.d(
+                TAG,
+                "Manual chicken: screen=${screenWidth}x$screenHeight, base=${cfg.baseResolutionWidth}x${cfg.baseResolutionHeight}"
+            )
+            Log.d(
+                TAG,
+                "Manual chicken: original=(${cfg.chickenButton.x},${cfg.chickenButton.y}) -> scaled=($startX,$startY)"
+            )
+        }
 
         withContext(Dispatchers.Main) {
             if (isPausedProvider()) return@withContext
@@ -92,10 +96,12 @@ class ChickenRunner(
 
         val isRedZone = checkRedIndicator(service)
 
-        Log.d(
-            TAG,
-            "Smart chicken: isRedZone=$isRedZone, checkPoint=(${cfg.redIndicatorCheckPoint.x},${cfg.redIndicatorCheckPoint.y})"
-        )
+        if (shouldEmitVerboseLog()) {
+            Log.d(
+                TAG,
+                "Smart chicken: isRedZone=$isRedZone, checkPoint=(${cfg.redIndicatorCheckPoint.x},${cfg.redIndicatorCheckPoint.y})"
+            )
+        }
 
         if (isRedZone) {
             val cooldownMs = cfg.redIndicatorCooldownMs
@@ -196,15 +202,17 @@ class ChickenRunner(
                         false
                     }
                     val isRed = localRed || fallbackRed
-                    Log.d(
-                        TAG,
-                        "Red indicator check: base=(${cfg.redIndicatorCheckPoint.x},${cfg.redIndicatorCheckPoint.y}) " +
-                            "scaled=($baseX,$baseY), rect=[$left,$top]-[$right,$bottom], " +
-                            "screen=${bitmap.width}x${bitmap.height}, scale=${"%.3f".format(scaleFactor)}, " +
-                            "tolerance=$tolerance, hits=$redCount/$sampled (${String.format("%.4f", ratio)}), " +
-                            "green=$greenCount (${String.format("%.4f", greenRatio)}), likelyGreen=$likelyGreenState, " +
-                            "bestHit=$bestHit, localRed=$localRed, fallbackRed=$fallbackRed, isRed=$isRed"
-                    )
+                    if (shouldEmitVerboseLog()) {
+                        Log.d(
+                            TAG,
+                            "Red indicator check: base=(${cfg.redIndicatorCheckPoint.x},${cfg.redIndicatorCheckPoint.y}) " +
+                                "scaled=($baseX,$baseY), rect=[$left,$top]-[$right,$bottom], " +
+                                "screen=${bitmap.width}x${bitmap.height}, scale=${"%.3f".format(scaleFactor)}, " +
+                                "tolerance=$tolerance, hits=$redCount/$sampled (${String.format("%.4f", ratio)}), " +
+                                "green=$greenCount (${String.format("%.4f", greenRatio)}), likelyGreen=$likelyGreenState, " +
+                                "bestHit=$bestHit, localRed=$localRed, fallbackRed=$fallbackRed, isRed=$isRed"
+                        )
+                    }
                     isRed
                 } finally {
                     bitmap.recycle()
@@ -262,10 +270,19 @@ class ChickenRunner(
         val ratio = if (sampled > 0) redCount.toFloat() / sampled.toFloat() else 0f
         // Для широкого band нормальный сигнал получается очень "разреженным".
         val fallbackRed = redCount >= 8 && ratio >= 0.003f
-        Log.d(
-            TAG,
-            "Red fallback band: rect=[$left,$top]-[$right,$bottom], hits=$redCount/$sampled (${String.format("%.4f", ratio)}), fallbackRed=$fallbackRed"
-        )
+        if (shouldEmitVerboseLog()) {
+            Log.d(
+                TAG,
+                "Red fallback band: rect=[$left,$top]-[$right,$bottom], hits=$redCount/$sampled (${String.format("%.4f", ratio)}), fallbackRed=$fallbackRed"
+            )
+        }
         return fallbackRed
+    }
+
+    private fun shouldEmitVerboseLog(): Boolean {
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (now - lastVerboseLogMs < VERBOSE_LOG_INTERVAL_MS) return false
+        lastVerboseLogMs = now
+        return true
     }
 }

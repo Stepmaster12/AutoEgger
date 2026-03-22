@@ -93,13 +93,6 @@ class MainActivity : AppCompatActivity() {
         permissionHelper = PermissionHelper(this)
         configManager = ConfigManager(this)
 
-        // Инициализация OpenCV
-        try {
-            System.loadLibrary("opencv_java4")
-        } catch (e: UnsatisfiedLinkError) {
-            Log.e("MainActivity", "OpenCV not loaded", e)
-        }
-
         initViews()
         loadSettings()
         updatePermissionStatus()

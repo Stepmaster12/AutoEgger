@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import androidx.core.graphics.get
+import com.egginc.autoclicker.R
 import com.egginc.autoclicker.utils.ClickerConfig
 import com.egginc.autoclicker.utils.ConfigManager
 import com.egginc.autoclicker.utils.DisplayUtils
@@ -24,6 +25,7 @@ class ResearchAutomationService(
     companion object {
         private const val TAG = "ResearchAutomation"
         private const val PAUSE_OWNER_RESEARCH = "auto_research"
+        private const val VERBOSE_LOG_INTERVAL_MS = 5000L
         private val VALID_BUTTON_SCAN_OFFSETS = arrayOf(
             intArrayOf(0, 0),
             intArrayOf(-2, 0), intArrayOf(2, 0), intArrayOf(0, -2), intArrayOf(0, 2),
@@ -65,6 +67,7 @@ class ResearchAutomationService(
     private var templateBoughtScaled: Bitmap? = null
     @Volatile
     private var templatesReleased = false
+    private var lastVerboseLogMs: Long = 0L
     
     /**
      * Получает текущее разрешение экрана через скриншот
@@ -173,7 +176,7 @@ class ResearchAutomationService(
                     
                     // После работы ждём полный интервал
                     val intervalMs = config.autoResearchIntervalSec * 1000L
-                    Log.d(TAG, "Waiting ${intervalMs}ms until next check")
+                    verboseLog("Waiting ${intervalMs}ms until next check")
                     if (!delayWithStopCheck(intervalMs)) {
                         Log.d(TAG, "Research stopped during interval wait")
                         break
@@ -216,9 +219,9 @@ class ResearchAutomationService(
      * Скроллит вверх и вниз чтобы найти все доступные кнопки
      */
     private suspend fun checkAndBuyResearch(config: ClickerConfig) {
-        Log.d(TAG, "Checking for available research...")
+        verboseLog("Checking for available research...")
         val speed = getResearchSpeedProfile(config)
-        Log.d(TAG, "Research speed mode: ${speed.modeName}")
+        verboseLog("Research speed mode: ${speed.modeName}")
         waitUntilNoExternalPause()
         if (shouldStop()) return
 
@@ -229,7 +232,7 @@ class ResearchAutomationService(
         }
         
         if (shouldStop()) {
-            Log.d(TAG, "Stop requested before starting research check")
+            verboseLog("Stop requested before starting research check")
             return
         }
 
@@ -243,8 +246,7 @@ class ResearchAutomationService(
 
             // 2. Сначала скроллим ВВЕРХ к началу списка (используем настройку swipesUp)
             val swipePlan = buildAdaptiveSwipePlan(config)
-            Log.d(
-                TAG,
+            verboseLog(
                 "Adaptive swipes: up=${swipePlan.swipesUp}, down=${swipePlan.swipesDown}, " +
                     "up(${swipePlan.upStartOffsetBase}->${swipePlan.upEndOffsetBase}), " +
                     "down(${swipePlan.downStartOffsetBase}->${swipePlan.downEndOffsetBase})"
@@ -267,10 +269,8 @@ class ResearchAutomationService(
             if (shouldStop()) return
             
             // Делаем скроллы вниз с паузами 1.8 сек
-            repeat(swipesDown) { scrollNum ->
+            repeat(swipesDown) {
                 if (shouldStop()) return@repeat
-                
-                Log.d(TAG, "Scroll down #${scrollNum + 1}/$swipesDown")
                 
                 // Скроллим вниз (снизу вверх = контент двигается вниз)
                 withContext(Dispatchers.Main) {
@@ -290,7 +290,7 @@ class ResearchAutomationService(
 
             if (shouldStop()) return
             
-            Log.d(TAG, "Finished processing research list")
+            verboseLog("Finished processing research list")
             if (!delayWithStopCheck(1000)) return // Пауза перед закрытием
 
             // 4. Закрываем лабораторию
@@ -306,16 +306,16 @@ class ResearchAutomationService(
      * Delay с проверкой на остановку - возвращает true если продолжаем, false если остановлены
      */
     private suspend fun delayWithStopCheck(timeMs: Long): Boolean {
-        val checkInterval = 100L // Проверяем каждые 100ms
+        val checkInterval = 150L // Чуть реже пробуждаем CPU во время длинных ожиданий
         var elapsed = 0L
         
         while (elapsed < timeMs) {
             if (shouldStop()) {
-                Log.d(TAG, "Stop detected during delay at ${elapsed}ms/${timeMs}ms")
+                verboseLog("Stop detected during delay at ${elapsed}ms/${timeMs}ms")
                 return false
             }
             if (autoclickerController.isPausedByOthers(PAUSE_OWNER_RESEARCH)) {
-                delay(80)
+                delay(140)
                 continue
             }
             val remaining = timeMs - elapsed
@@ -328,7 +328,7 @@ class ResearchAutomationService(
 
     private suspend fun waitUntilNoExternalPause() {
         while (!shouldStop() && autoclickerController.isPausedByOthers(PAUSE_OWNER_RESEARCH)) {
-            delay(120)
+            delay(200)
         }
     }
     
@@ -336,7 +336,7 @@ class ResearchAutomationService(
      * Приостанавливает другие скрипты (курики, подарки) на время покупки исследований
      */
     private fun pauseOtherScripts() {
-        Log.d(TAG, "Pausing other scripts for research")
+        verboseLog("Pausing other scripts for research")
         autoclickerController.pause(PAUSE_OWNER_RESEARCH)
     }
     
@@ -344,7 +344,7 @@ class ResearchAutomationService(
      * Возобновляет другие скрипты после покупки исследований
      */
     private fun resumeOtherScripts() {
-        Log.d(TAG, "Resuming other scripts after research")
+        verboseLog("Resuming other scripts after research")
         autoclickerController.resume(PAUSE_OWNER_RESEARCH)
     }
     
@@ -373,7 +373,7 @@ class ResearchAutomationService(
             // Если нет кнопок - выходим (переходим к свайпу)
             if (buttons.isEmpty()) {
                 emptyStreak++
-                Log.d(TAG, "No green buttons found on screen (empty streak=$emptyStreak)")
+                verboseLog("No green buttons found on screen (empty streak=$emptyStreak)")
                 // На маленьких экранах и при анимациях бывают ложные "пустые" кадры.
                 // Требуем 2 подряд пустых скана перед переходом к свайпу.
                 if (emptyStreak >= 2) break
@@ -385,7 +385,7 @@ class ResearchAutomationService(
             // Берём самую верхнюю кнопку (с минимальным Y)
             val topButton = buttons.minByOrNull { it.y } ?: break
             
-            Log.d(TAG, "Processing top button at (${topButton.x}, ${topButton.y})")
+            verboseLog("Processing top button at (${topButton.x}, ${topButton.y})")
             
             // Барраж 1: всегда 10 кликов
             repeat(10) {
@@ -407,7 +407,7 @@ class ResearchAutomationService(
                 
                 // Ищем ту же кнопку (по близости координат)
                 if (!stillGreen) {
-                    Log.d(TAG, "Button gone/gray after ${barrageNum-1} barrages, moving to next")
+                    verboseLog("Button gone/gray after ${barrageNum-1} barrages, moving to next")
                     break // Кнопка пропала - выходим к поиску следующей
                 }
                 
@@ -416,7 +416,7 @@ class ResearchAutomationService(
                 // так что если кнопка есть в списке - значит зелёная
                 
                 // Делаем ещё 10 кликов
-                Log.d(TAG, "Barrage #$barrageNum for button at (${topButton.x}, ${topButton.y})")
+                verboseLog("Barrage #$barrageNum for button at (${topButton.x}, ${topButton.y})")
                 repeat(10) {
                     if (shouldStop()) return@repeat
                     buyResearch(topButton)
@@ -502,8 +502,7 @@ class ResearchAutomationService(
         
         val x = scaleX(config.researchMenuButton.x, config)
         val y = scaleY(config.researchMenuButton.y, config)
-        Log.d(TAG, "Opening research menu at ($x, $y) [original: ${config.researchMenuButton.x}, ${config.researchMenuButton.y}]")
-        Log.d(TAG, "Screen: ${screenWidth}x$screenHeight, Base: ${config.baseResolutionWidth}x${config.baseResolutionHeight}")
+        verboseLog("Opening research menu at ($x, $y)")
         
         withContext(Dispatchers.Main) {
             accessibilityService.performClick(x, y)
@@ -517,7 +516,7 @@ class ResearchAutomationService(
     private suspend fun closeResearchMenu(config: ClickerConfig) {
         val x = scaleX(config.researchCloseButton.x, config)
         val y = scaleY(config.researchCloseButton.y, config)
-        Log.d(TAG, "Closing research menu at ($x, $y)")
+        verboseLog("Closing research menu at ($x, $y)")
         withContext(Dispatchers.Main) {
             accessibilityService.performClick(x, y)
         }
@@ -537,10 +536,9 @@ class ResearchAutomationService(
         val swipesUp = swipePlan.swipesUp
         
         // Скроллим вверх (сверху вниз = контент двигается вверх к началу)
-        repeat(swipesUp) { i ->
+        repeat(swipesUp) {
             if (shouldStop()) return@repeat
             
-            Log.d(TAG, "Scroll up #${i + 1}/$swipesUp")
             withContext(Dispatchers.Main) {
                 accessibilityService.performSwipe(
                     scanLeft + offsetX,
@@ -579,8 +577,8 @@ class ResearchAutomationService(
         val smallScreenFactor = when {
             shortEdge <= 760 -> 0.74f
             shortEdge <= 900 -> 0.82f
-            shortEdge <= 1080 -> 0.90f
-            else -> 1.0f
+            shortEdge <= 1080 -> 0.86f   // обычные экраны: немного короче свайп
+            else -> 0.94f                // большие экраны: тоже чуть короче
         }
         val lengthFactor = ((1f / countFactor) * smallScreenFactor).coerceIn(0.60f, 1.2f)
 
@@ -611,7 +609,6 @@ class ResearchAutomationService(
      * Нажимает кнопку покупки исследования
      */
     private suspend fun buyResearch(button: ResearchButton) {
-        Log.d(TAG, "Buying research at (${button.x}, ${button.y})")
         withContext(Dispatchers.Main) {
             accessibilityService.performClick(button.x, button.y)
         }
@@ -635,7 +632,6 @@ class ResearchAutomationService(
             // Обновляем размеры из скриншота (это реальное полное разрешение экрана)
             screenWidth = bitmap.width
             screenHeight = bitmap.height
-            Log.d(TAG, "Screenshot dimensions: ${screenWidth}x${screenHeight}")
             
             val scanArea = config.researchScanArea
 
@@ -676,7 +672,6 @@ class ResearchAutomationService(
                             // Галочка в квадрате: ~80x80 на 1440p, ~40x40 на 720p, но сама галочка ~20x20
                             // Порог 70x25 работает для всех экранов
                             if (width < minButtonWidthPx || height < minButtonHeightPx) {
-                                Log.d(TAG, "Skipping small green area (${width}x${height}) at ($centerX, $centerY) - likely a checkmark")
                                 continue
                             }
 
@@ -688,14 +683,14 @@ class ResearchAutomationService(
                             if (lastY == -1 || kotlin.math.abs(centerY - lastY) > dedupYPx) {
                                 buttons.add(ResearchButton(centerX, centerY))
                                 lastY = centerY
-                                Log.d(TAG, "Found research button at ($centerX, $centerY), size: ${width}x${height}")
+                                verboseLog("Found research button at ($centerX, $centerY), size: ${width}x${height}")
                             }
                         }
                     }
                 }
             }
 
-            Log.d(TAG, "Total buttons found: ${buttons.size}")
+            verboseLog("Total buttons found: ${buttons.size}")
 
         } finally {
             bitmap.recycle()
@@ -807,17 +802,17 @@ class ResearchAutomationService(
 
     private fun ensureResearchTemplatesLoaded() {
         if (templateGreenButton == null || templateGreenButton?.isRecycled == true) {
-            templateGreenButton = loadTemplateBitmap("green_button", "green-button")
+            templateGreenButton = loadTemplateBitmap(R.drawable.green_button)
             templateGreenScaled?.recycle()
             templateGreenScaled = null
         }
         if (templateGreyButton == null || templateGreyButton?.isRecycled == true) {
-            templateGreyButton = loadTemplateBitmap("grey_button", "gray_button", "grey-button")
+            templateGreyButton = loadTemplateBitmap(R.drawable.grey_button)
             templateGreyScaled?.recycle()
             templateGreyScaled = null
         }
         if (templateBought == null || templateBought?.isRecycled == true) {
-            templateBought = loadTemplateBitmap("bought")
+            templateBought = loadTemplateBitmap(R.drawable.bought)
             templateBoughtScaled?.recycle()
             templateBoughtScaled = null
         }
@@ -834,22 +829,15 @@ class ResearchAutomationService(
         }
     }
 
-    private fun loadTemplateBitmap(vararg names: String): Bitmap? {
-        for (name in names) {
-            val resId = accessibilityService.resources.getIdentifier(name, "drawable", accessibilityService.packageName)
-            if (resId != 0) {
-                try {
-                    val bmp = BitmapFactory.decodeResource(accessibilityService.resources, resId)
-                    if (bmp != null) {
-                        Log.d(TAG, "Loaded research template: $name")
-                        return bmp
-                    }
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to decode template: $name", e)
-                }
+    private fun loadTemplateBitmap(resId: Int): Bitmap? {
+        return try {
+            BitmapFactory.decodeResource(accessibilityService.resources, resId)?.also {
+                verboseLog("Loaded research template: resId=$resId")
             }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to decode template: resId=$resId", e)
+            null
         }
-        return null
     }
 
     private fun isLikelyResearchBuyButton(
@@ -893,62 +881,13 @@ class ResearchAutomationService(
             greenScore > boughtScore + deltaBought
 
         if (!accepted) {
-            Log.d(
-                TAG,
+            verboseLog(
                 "Template rejected at ($centerX,$centerY): green=${"%.2f".format(greenScore)}, " +
                     "grey=${"%.2f".format(greyScore)}, bought=${"%.2f".format(boughtScore)}"
             )
         }
 
         return accepted
-    }
-
-    private fun compareTemplate(
-        screenshot: Bitmap,
-        template: Bitmap,
-        centerX: Int,
-        centerY: Int,
-        patchW: Int,
-        patchH: Int
-    ): Float {
-        val left = (centerX - patchW / 2).coerceIn(0, screenshot.width - 1)
-        val top = (centerY - patchH / 2).coerceIn(0, screenshot.height - 1)
-        val right = (left + patchW).coerceIn(left + 1, screenshot.width)
-        val bottom = (top + patchH).coerceIn(top + 1, screenshot.height)
-
-        val patch = Bitmap.createBitmap(screenshot, left, top, right - left, bottom - top)
-        val scaledPatch = Bitmap.createScaledBitmap(patch, 36, 14, true)
-        val scaledTemplate = when (template) {
-            templateGreenButton -> templateGreenScaled ?: Bitmap.createScaledBitmap(template, 36, 14, true)
-            templateGreyButton -> templateGreyScaled ?: Bitmap.createScaledBitmap(template, 36, 14, true)
-            templateBought -> templateBoughtScaled ?: Bitmap.createScaledBitmap(template, 36, 14, true)
-            else -> Bitmap.createScaledBitmap(template, 36, 14, true)
-        }
-        patch.recycle()
-
-        var diff = 0f
-        val total = 36 * 14
-        for (y in 0 until 14) {
-            for (x in 0 until 36) {
-                val p = scaledPatch[x, y]
-                val t = scaledTemplate[x, y]
-                val dr = kotlin.math.abs(Color.red(p) - Color.red(t))
-                val dg = kotlin.math.abs(Color.green(p) - Color.green(t))
-                val db = kotlin.math.abs(Color.blue(p) - Color.blue(t))
-                diff += (dr + dg + db) / 3f
-            }
-        }
-        scaledPatch.recycle()
-        // Кэшированные scaled template не освобождаем здесь.
-        if (scaledTemplate !== templateGreenScaled &&
-            scaledTemplate !== templateGreyScaled &&
-            scaledTemplate !== templateBoughtScaled
-        ) {
-            scaledTemplate.recycle()
-        }
-
-        val meanDiff = diff / total
-        return (1f - (meanDiff / 255f)).coerceIn(0f, 1f)
     }
 
     private fun createScaledResearchPatch(
@@ -1024,5 +963,12 @@ class ResearchAutomationService(
             templateGreyScaled = null
             templateBoughtScaled = null
         }
+    }
+
+    private fun verboseLog(message: String) {
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (now - lastVerboseLogMs < VERBOSE_LOG_INTERVAL_MS) return
+        lastVerboseLogMs = now
+        Log.d(TAG, message)
     }
 }

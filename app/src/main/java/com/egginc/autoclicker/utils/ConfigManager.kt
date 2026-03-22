@@ -1,6 +1,7 @@
 package com.egginc.autoclicker.utils
 
 import android.content.Context
+import android.os.SystemClock
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.io.File
@@ -321,8 +322,25 @@ class ConfigManager(context: Context) {
     
     private val gson = Gson()
     private val configFile = File(context.filesDir, "clicker_config.json")
+    private val cacheLock = Any()
+    @Volatile
+    private var cachedConfig: ClickerConfig? = null
+    @Volatile
+    private var cachedFileMtime: Long = Long.MIN_VALUE
+    @Volatile
+    private var cachedAtElapsedMs: Long = 0L
     
     fun loadConfig(): ClickerConfig {
+        val fileMtime = if (configFile.exists()) configFile.lastModified() else Long.MIN_VALUE
+        val nowElapsed = SystemClock.elapsedRealtime()
+        synchronized(cacheLock) {
+            val cacheAlive = nowElapsed - cachedAtElapsedMs <= 750L
+            val cacheValidForFile = cachedFileMtime == fileMtime
+            if (cacheAlive && cacheValidForFile && cachedConfig != null) {
+                return cachedConfig!!
+            }
+        }
+
         return try {
             val config = if (configFile.exists()) {
                 val json = configFile.readText()
@@ -345,6 +363,11 @@ class ConfigManager(context: Context) {
             config.researchMinButtonHeightRatio = config.researchMinButtonHeightRatio.coerceIn(0.003, 0.08)
             config.researchButtonDedupYRatio = config.researchButtonDedupYRatio.coerceIn(0.003, 0.10)
             migrateAndClampPoints(config, preferNormalized = true)
+            synchronized(cacheLock) {
+                cachedConfig = config
+                cachedFileMtime = if (configFile.exists()) configFile.lastModified() else Long.MIN_VALUE
+                cachedAtElapsedMs = SystemClock.elapsedRealtime()
+            }
             config
         } catch (e: Exception) {
             e.printStackTrace()
@@ -357,6 +380,11 @@ class ConfigManager(context: Context) {
             migrateAndClampPoints(config, preferNormalized = false)
             val json = gson.toJson(config)
             configFile.writeText(json)
+            synchronized(cacheLock) {
+                cachedConfig = config
+                cachedFileMtime = if (configFile.exists()) configFile.lastModified() else Long.MIN_VALUE
+                cachedAtElapsedMs = SystemClock.elapsedRealtime()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

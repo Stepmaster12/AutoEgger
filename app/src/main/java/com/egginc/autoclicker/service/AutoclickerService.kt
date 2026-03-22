@@ -17,6 +17,7 @@ import com.egginc.autoclicker.cv.ComputerVision
 import com.egginc.autoclicker.utils.ClickerConfig
 import com.egginc.autoclicker.utils.ConfigManager
 import com.egginc.autoclicker.utils.DisplayUtils
+import com.egginc.autoclicker.utils.LocaleHelper
 import com.egginc.autoclicker.utils.ScreenMapper
 
 import kotlinx.coroutines.*
@@ -28,6 +29,10 @@ import kotlinx.coroutines.sync.withLock
  * Foreground Service с основной логикой автокликера
  */
 class AutoclickerService : Service() {
+    override fun attachBaseContext(newBase: Context?) {
+        val context = newBase?.let { LocaleHelper.setLocale(it) }
+        super.attachBaseContext(context)
+    }
     
     companion object {
         private const val TAG = "AutoclickerService"
@@ -180,11 +185,18 @@ class AutoclickerService : Service() {
     private var screenshotsWorking = true
     private var screenshotFailCount = 0
     private val maxScreenshotFails = 5
+    private var lastScreenDimensionsUpdateMs = 0L
+    private val screenDimensionsRefreshIntervalMs = 30_000L
     
     /**
      * Обновляет размеры экрана из скриншота
      */
     private suspend fun updateScreenDimensions(): Boolean {
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (screenWidth > 0 && screenHeight > 0 && now - lastScreenDimensionsUpdateMs < screenDimensionsRefreshIntervalMs) {
+            return screenshotsWorking
+        }
+
         try {
             if (screenshotsWorking) {
                 val screenshot = ClickerAccessibilityService.instance?.takeScreenshotSuspend()
@@ -194,6 +206,7 @@ class AutoclickerService : Service() {
                     screenHeight = screenshot.height
                     screenshot.recycle()
                     screenshotFailCount = 0
+                    lastScreenDimensionsUpdateMs = now
                     Log.d(TAG, "Screen dimensions from screenshot: ${screenWidth}x${screenHeight}")
                     return true
                 }
@@ -214,6 +227,7 @@ class AutoclickerService : Service() {
         val dims = DisplayUtils.getRealScreenDimensions(this)
         screenWidth = dims.first
         screenHeight = dims.second
+        lastScreenDimensionsUpdateMs = now
         Log.d(TAG, "Screen dimensions from WindowManager fallback: ${screenWidth}x$screenHeight")
         return false
     }

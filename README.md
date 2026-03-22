@@ -15,7 +15,7 @@
   </a>
 </p>
 
-Android app for automating routine actions in **Egg Inc**
+Android app for automating routine actions in **Egg Inc**  
 Main goal: automate as much routine as possible so the game can safely run for long sessions with minimal manual input.
 
 ## Highlights
@@ -26,7 +26,7 @@ Main goal: automate as much routine as possible so the game can safely run for l
 
 ## Important
 
-This project was actively developed with AI assistance.
+This project was actively developed with AI assistance.  
 If you want to continue or improve it, please fork the repository and publish your changes in your own fork.
 
 Android 13+ permission flow:
@@ -37,20 +37,57 @@ Android 13+ permission flow:
 
 ![Android 13+ permission walkthrough](./docs/permissions_flow.gif)
 
-## Features
+## Compatibility
 
-- `Auto Chicken`: normal mode and smart pause on red zone
-- `Auto Gift`: CV object detection + timer-based fallback
-- `Auto Research`: green-button scanning, swipes, interval
-- `Auto Boost 2x`: scheduled Video Doubler activation
-- `Auto Drones`: swipe-based catch routine
-
-## Requirements
-
+### Minimum Supported
 - Android 7.0+ (API 24+)
 - Overlay permission
 - Accessibility Service enabled
-- Android 11+ recommended for CV-heavy scenarios
+
+### Recommended
+- Android 11+ for CV-heavy scenarios
+- Android 13+ works best after completing restricted-settings flow for Accessibility
+
+### Tested Devices
+- Samsung S24 Ultra (real device: 4K + 1560x720 (HD+) tests)
+- Android Studio phone emulator (small-resolution profile)
+- Android Studio tablet emulator (wide-screen profile)
+
+## Features
+
+- `Auto Chicken`: normal mode and smart pause on red zone
+
+![Auto Chicken demo](./docs/gifs/auto_chicken.gif)
+
+- `Auto Gift`: CV object detection + timer-based fallback
+
+![Auto Gift demo](./docs/gifs/auto_gift.gif)
+
+- `Auto Research`: green-button scanning, swipes, interval
+
+![Auto Research demo](./docs/gifs/auto_research.gif)
+
+- `Auto Boost 2x`: scheduled Video Doubler activation
+
+![Auto Boost demo](./docs/gifs/auto_boost.gif)
+
+- `Auto Drones`: swipe-based catch routine
+
+![Auto Drones demo](./docs/gifs/auto_drones.gif)
+
+## Screenshots
+
+Main screen:
+
+![Main screen](./docs/images/main-screen.png)
+
+Settings screen:
+
+![Settings screen](./docs/images/settings-screen.png)
+
+Auto-features panel (expanded):
+
+![Auto-features expanded](./docs/images/settings-auto-features-expanded.png)
 
 ## Quick Start
 
@@ -59,28 +96,29 @@ Android 13+ permission flow:
 3. Open settings and tune intervals/modes.
 4. Launch overlay and press `START`.
 
+## Disclaimer
+
+Use at your own risk.
+
 ## Project Structure
 
-- `app/src/main/java/com/egginc/autoclicker/`
-Core app code (UI, services, automation logic).
-- `app/src/main/java/com/egginc/autoclicker/service/`
-Runtime services and automation runners.
-- `app/src/main/java/com/egginc/autoclicker/cv/`
-Computer vision helpers for detection workflows.
-- `app/src/main/res/`
-Layouts, strings, drawables and localization resources.
+- `app/src/main/java/com/egginc/autoclicker/`  
+  Core app code (UI, services, automation logic).
+- `app/src/main/java/com/egginc/autoclicker/service/`  
+  Runtime services and automation runners.
+- `app/src/main/java/com/egginc/autoclicker/cv/`  
+  Computer vision helpers for detection workflows.
+- `app/src/main/res/`  
+  Layouts, strings, drawables and localization resources.
 
 ## Tech Stack
 
 - Kotlin + Android SDK
 - Accessibility Service + Overlay window
-- OpenCV (Android) for CV-assisted detection
+- Lightweight bitmap/template CV detection (no OpenCV runtime dependency)
 - Coroutines for async/background tasks
-
-## Disclaimer
-
-Use at your own risk.
 
 ## License
 
 MIT License. See [LICENSE](LICENSE).
+

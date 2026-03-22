@@ -44,6 +44,10 @@ class ClickerAccessibilityService : AccessibilityService() {
     private val screenshotMutex = Mutex()
     @Volatile
     private var lastScreenshotRequestMs: Long = 0L
+    @Volatile
+    private var screenshotFailureStreak: Int = 0
+    @Volatile
+    private var screenshotBackoffUntilMs: Long = 0L
     
     override fun onCreate() {
         super.onCreate()
@@ -80,8 +84,6 @@ class ClickerAccessibilityService : AccessibilityService() {
      * Выполняет одиночный тап по указанным координатам
      */
     fun performClick(x: Int, y: Int, callback: ((Boolean) -> Unit)? = null) {
-        Log.d(TAG, "Performing click at ($x, $y)")
-        
         val path = Path().apply {
             moveTo(x.toFloat(), y.toFloat())
         }
@@ -92,19 +94,16 @@ class ClickerAccessibilityService : AccessibilityService() {
         
         val result = dispatchGesture(gesture, object : GestureResultCallback() {
             override fun onCompleted(gestureDescription: GestureDescription?) {
-                Log.d(TAG, "Click completed at ($x, $y)")
                 callback?.invoke(true)
             }
             
             override fun onCancelled(gestureDescription: GestureDescription?) {
-                Log.d(TAG, "Click cancelled at ($x, $y)")
                 callback?.invoke(false)
             }
         }, null)
-        
-        Log.d(TAG, "dispatchGesture result: $result")
-        
+
         if (!result) {
+            Log.w(TAG, "dispatchGesture click failed at ($x, $y)")
             callback?.invoke(false)
         }
     }
@@ -148,8 +147,6 @@ class ClickerAccessibilityService : AccessibilityService() {
      * @param durationMs Длительность свайпа (3-5 секунд)
      */
     fun performSlowSwipe(startX: Int, startY: Int, endX: Int, endY: Int, durationMs: Long, callback: ((Boolean) -> Unit)? = null) {
-        Log.d(TAG, "Performing slow swipe from ($startX, $startY) to ($endX, $endY) for ${durationMs}ms")
-        
         val path = Path().apply {
             moveTo(startX.toFloat(), startY.toFloat())
             lineTo(endX.toFloat(), endY.toFloat())
@@ -161,17 +158,16 @@ class ClickerAccessibilityService : AccessibilityService() {
         
         val result = dispatchGesture(gesture, object : GestureResultCallback() {
             override fun onCompleted(gestureDescription: GestureDescription?) {
-                Log.d(TAG, "Slow swipe completed")
                 callback?.invoke(true)
             }
             
             override fun onCancelled(gestureDescription: GestureDescription?) {
-                Log.d(TAG, "Slow swipe cancelled")
                 callback?.invoke(false)
             }
         }, null)
         
         if (!result) {
+            Log.w(TAG, "dispatchGesture slow swipe failed: ($startX,$startY)->($endX,$endY), duration=$durationMs")
             callback?.invoke(false)
         }
     }
@@ -276,10 +272,15 @@ class ClickerAccessibilityService : AccessibilityService() {
         }
 
         return screenshotMutex.withLock {
+            val lockNow = SystemClock.elapsedRealtime()
+            if (lockNow < screenshotBackoffUntilMs) {
+                return@withLock null
+            }
+
             // Системный API не любит очень частые запросы скриншота.
             // Держим минимальный интервал между вызовами.
             val now = SystemClock.elapsedRealtime()
-            val minScreenshotIntervalMs = 420L
+            val minScreenshotIntervalMs = 520L
             val sinceLast = now - lastScreenshotRequestMs
             if (sinceLast in 0 until minScreenshotIntervalMs) {
                 delay(minScreenshotIntervalMs - sinceLast)
@@ -288,11 +289,15 @@ class ClickerAccessibilityService : AccessibilityService() {
 
             // На Samsung Android 16 бывают проблемы с частыми скриншотами
             // Ждём немного перед попыткой
-            delay(50)
+            delay(25)
             
             // Пробуем стандартный метод AccessibilityService с таймаутом
-            repeat(3) { attempt ->
-                Log.d(TAG, "Trying Accessibility screenshot attempt ${attempt + 1}...")
+            val maxAttempts = when {
+                screenshotFailureStreak >= 6 -> 1
+                screenshotFailureStreak >= 3 -> 2
+                else -> 3
+            }
+            repeat(maxAttempts) { attempt ->
                 val result = try {
                     withTimeout(1000) {  // 1 секунда таймаут
                         takeScreenshotOnce()
@@ -302,10 +307,13 @@ class ClickerAccessibilityService : AccessibilityService() {
                     null
                 }
                 if (result != null) {
-                    Log.d(TAG, "Accessibility screenshot success!")
+                    screenshotFailureStreak = 0
+                    screenshotBackoffUntilMs = 0L
                     return@withLock result
                 }
-                Log.w(TAG, "Accessibility screenshot attempt ${attempt + 1} failed")
+                if (attempt == maxAttempts - 1) {
+                    Log.w(TAG, "Accessibility screenshot failed after retries")
+                }
                 // Увеличиваем задержку между попытками
                 delay(200 + attempt * 100L)
             }
@@ -315,10 +323,20 @@ class ClickerAccessibilityService : AccessibilityService() {
             // Fallback на screencap
             val screencapResult = takeScreenshotViaScreencap()
             if (screencapResult != null) {
+                screenshotFailureStreak = 0
+                screenshotBackoffUntilMs = 0L
                 return@withLock screencapResult
             }
             
             Log.e(TAG, "All screenshot methods failed")
+            screenshotFailureStreak = (screenshotFailureStreak + 1).coerceAtMost(10)
+            val backoff = when {
+                screenshotFailureStreak >= 8 -> 5000L
+                screenshotFailureStreak >= 5 -> 3000L
+                screenshotFailureStreak >= 3 -> 1500L
+                else -> 700L
+            }
+            screenshotBackoffUntilMs = SystemClock.elapsedRealtime() + backoff
             return@withLock null
         }
     }

@@ -29,7 +29,9 @@ class GiftRunner(
 ) {
     companion object {
         private const val TAG = "GiftRunner"
+        private const val VERBOSE_LOG_INTERVAL_MS = 5000L
     }
+    private var lastVerboseLogMs: Long = 0L
 
     suspend fun runIteration(service: ClickerAccessibilityService): Long {
         val iterationStartMs = SystemClock.elapsedRealtime()
@@ -43,7 +45,6 @@ class GiftRunner(
         if (cfg.useCVForGift && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val giftDetected = checkGiftWithCV(service, cfg)
             if (!giftDetected) {
-                Log.d(TAG, "No gift detected via CV, skip this cycle")
                 val elapsedMs = SystemClock.elapsedRealtime() - iterationStartMs
                 return (cfg.giftCheckIntervalMs - elapsedMs).coerceAtLeast(150L)
             } else {
@@ -61,24 +62,24 @@ class GiftRunner(
         val confirmY = scaleY(cfg.giftConfirmButton.y)
         val (screenWidth, screenHeight) = screenSizeProvider()
 
-        Log.d(
+        verboseLog(
             TAG,
             "Gift: screen=${screenWidth}x$screenHeight, base=${cfg.baseResolutionWidth}x${cfg.baseResolutionHeight}"
         )
-        Log.d(TAG, "Gift click point: ($giftX,$giftY), fallback=($fallbackGiftX,$fallbackGiftY)")
+        verboseLog("Gift click point: ($giftX,$giftY), fallback=($fallbackGiftX,$fallbackGiftY)")
 
         withContext(Dispatchers.Main) {
             service.performClick(giftX, giftY)
         }
 
-        Log.d(TAG, "Gift box tap at ($giftX, $giftY)")
+        verboseLog("Gift box tap at ($giftX, $giftY)")
         delay(1000)
 
         withContext(Dispatchers.Main) {
             service.performClick(confirmX, confirmY)
         }
 
-        Log.d(TAG, "Gift collect button tap at ($confirmX, $confirmY)")
+        verboseLog("Gift collect button tap at ($confirmX, $confirmY)")
         delay(500)
 
         // Если накопилось несколько подарков, пытаемся добрать их сразу,
@@ -124,7 +125,7 @@ class GiftRunner(
             if (insideGate) {
                 lastDetectedGiftPoint = avgX to avgY
             } else {
-                Log.d(
+                verboseLog(
                     TAG,
                     "CV candidate rejected by expected-zone gate: avg=($avgX,$avgY), " +
                         "expected=($expectedX,$expectedY), d=($gateDx,$gateDy), radius=$gateRadius"
@@ -135,7 +136,7 @@ class GiftRunner(
             lastDetectedGiftPoint = null
         }
         val accepted = stable && lastDetectedGiftPoint != null
-        Log.d(TAG, "CV two-frame confirm: stable=$stable accepted=$accepted, d=($dx,$dy), threshold=$stabilityPx, p1=(${first.second},${first.third}), p2=(${second.second},${second.third})")
+        verboseLog("CV two-frame confirm: stable=$stable accepted=$accepted, d=($dx,$dy), threshold=$stabilityPx, p1=(${first.second},${first.third}), p2=(${second.second},${second.third})")
         return accepted
     }
 
@@ -153,7 +154,7 @@ class GiftRunner(
             val giftX = scaleX(cfg.giftTapLocation.x)
             val giftY = scaleY(cfg.giftTapLocation.y)
 
-            Log.d(TAG, "Starting CV check at ($giftX, $giftY)")
+            verboseLog("Starting CV check at ($giftX, $giftY)")
 
             withContext(Dispatchers.Main) {
                 detectionJob = service.findGiftWithCV(computerVision, cfg, giftX, giftY, cfg.cvDetectionMode) { found, foundX, foundY ->
@@ -169,12 +170,12 @@ class GiftRunner(
 
             if (result == null) {
                 detectionJob?.cancel()
-                Log.d(TAG, "CV gift detection timeout")
+                verboseLog("CV gift detection timeout")
                 Triple(false, 0, 0)
             } else {
                 detectionJob?.cancel()
                 val (found, x, y) = result
-                Log.d(TAG, "CV gift detection final result: $found at ($x, $y)")
+                verboseLog("CV gift detection final result: $found at ($x, $y)")
                 Triple(found, x, y)
             }
         } catch (e: CancellationException) {
@@ -194,7 +195,7 @@ class GiftRunner(
         var missesInRow = 0
         repeat(5) { attempt ->
             if (missesInRow >= 2) {
-                Log.d(TAG, "Quick extra gift checks stopped after consecutive misses")
+                verboseLog("Quick extra gift checks stopped after consecutive misses")
                 return
             }
 
@@ -202,7 +203,7 @@ class GiftRunner(
             val probe = runCvCheckOnce(service, cfg, timeoutMs = 1200L)
             if (!probe.first) {
                 missesInRow++
-                Log.d(TAG, "Quick extra gift check #${attempt + 1}: miss ($missesInRow in row)")
+                verboseLog("Quick extra gift check #${attempt + 1}: miss ($missesInRow in row)")
                 return@repeat
             }
 
@@ -210,7 +211,7 @@ class GiftRunner(
             val (found, x, y) = probe
             if (!found) return@repeat
 
-            Log.d(TAG, "Quick extra gift collect #${attempt + 1} at ($x,$y)")
+            verboseLog("Quick extra gift collect #${attempt + 1} at ($x,$y)")
             withContext(Dispatchers.Main) {
                 service.performClick(x, y)
             }
@@ -220,5 +221,19 @@ class GiftRunner(
             }
             delay(350)
         }
+    }
+
+    private fun verboseLog(message: String) {
+        val now = SystemClock.elapsedRealtime()
+        if (now - lastVerboseLogMs < VERBOSE_LOG_INTERVAL_MS) return
+        lastVerboseLogMs = now
+        Log.d(TAG, message)
+    }
+
+    private fun verboseLog(tag: String, message: String) {
+        val now = SystemClock.elapsedRealtime()
+        if (now - lastVerboseLogMs < VERBOSE_LOG_INTERVAL_MS) return
+        lastVerboseLogMs = now
+        Log.d(tag, message)
     }
 }

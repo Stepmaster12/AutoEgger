@@ -50,6 +50,10 @@ class AutoDroneService(
     @Volatile
     private var isRunning = false
     private var isInCustomization = false
+    private var cachedConfig: ClickerConfig? = null
+    private var cachedScreenDimensions: Pair<Int, Int>? = null
+    private var lastRuntimeRefreshMs: Long = 0L
+    private var lastSwipeLogMs: Long = 0L
     
     // Callback для уведомления UI о состоянии
     var onDroneStateChanged: ((Boolean) -> Unit)? = null
@@ -190,18 +194,22 @@ class AutoDroneService(
      * От края до края и обратно, циклически
      */
     private suspend fun performSwipeCycle() {
-        val config = configManager.loadConfig()
-        
-        // Получаем реальные размеры экрана через WindowManager
-        val (screenWidth, screenHeight) = getRealScreenDimensions()
+        val (config, screenWidth, screenHeight) = getRuntimeState()
         
         // Масштабируем координаты свайпа
         val startX = scaleX(config.droneSwipeStart.x, screenWidth, config)
         val startY = scaleY(config.droneSwipeStart.y, screenHeight, config)
         val endX = scaleX(config.droneSwipeEnd.x, screenWidth, config)
         val endY = scaleY(config.droneSwipeEnd.y, screenHeight, config)
-        
-        Log.d(TAG, "Swipe cycle: ($startX,$startY) <-> ($endX,$endY) [base: ${config.droneSwipeStart.x},${config.droneSwipeStart.y} <-> ${config.droneSwipeEnd.x},${config.droneSwipeEnd.y}]")
+
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (now - lastSwipeLogMs >= 5000L) {
+            lastSwipeLogMs = now
+            Log.d(
+                TAG,
+                "Swipe cycle: ($startX,$startY) <-> ($endX,$endY) [base: ${config.droneSwipeStart.x},${config.droneSwipeStart.y} <-> ${config.droneSwipeEnd.x},${config.droneSwipeEnd.y}]"
+            )
+        }
         
         // 1. От начала к концу
         if (!isRunning) return
@@ -222,6 +230,23 @@ class AutoDroneService(
         if (!isRunning) return
         if (!dispatchSwipe(endX, endY, startX, startY)) return
         delay(35)
+    }
+
+    private fun getRuntimeState(): Triple<ClickerConfig, Int, Int> {
+        val now = android.os.SystemClock.elapsedRealtime()
+        val shouldRefresh = cachedConfig == null ||
+            cachedScreenDimensions == null ||
+            now - lastRuntimeRefreshMs >= 3500L
+
+        if (shouldRefresh) {
+            cachedConfig = configManager.loadConfig()
+            cachedScreenDimensions = getRealScreenDimensions()
+            lastRuntimeRefreshMs = now
+        }
+
+        val cfg = cachedConfig ?: configManager.loadConfig()
+        val dims = cachedScreenDimensions ?: getRealScreenDimensions()
+        return Triple(cfg, dims.first, dims.second)
     }
 
     /**
@@ -304,6 +329,8 @@ class AutoDroneService(
      */
     fun destroy() {
         stop()
+        cachedConfig = null
+        cachedScreenDimensions = null
         coroutineScope.cancel()
         Log.d(TAG, "AutoDroneService destroyed")
     }

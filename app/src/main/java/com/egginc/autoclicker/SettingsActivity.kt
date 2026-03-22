@@ -22,7 +22,7 @@ import com.egginc.autoclicker.utils.Point
 import com.egginc.autoclicker.utils.StringManager
 
 /**
- * Activity для настройки координат точек кликов
+ * Activity для настройки авто-функций и интервалов.
  */
 @SuppressLint("SetTextI18n")
 class SettingsActivity : AppCompatActivity() {
@@ -493,7 +493,7 @@ class SettingsActivity : AppCompatActivity() {
             updateUnsavedChangesState()
         }
         
-        // Ручная настройка точек дронов отключена, блок всегда скрыт.
+        // Блок ручной настройки точек не используется: дроны работают от авто-логики.
         cbAutoDrones.setOnCheckedChangeListener { _, _ ->
             updateAutoFeatureSectionsVisibility()
             updateAutoFeatureLabelColors()

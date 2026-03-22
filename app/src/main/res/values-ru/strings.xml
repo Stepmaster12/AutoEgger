@@ -5,6 +5,7 @@
     <string name="overlay_title">Egg Inc Bot</string>
     <string name="icon_chicken">🐔</string>
     <string name="icon_gift">🎁</string>
+    <string name="icon_combo">🐔🎁</string>
     <string name="icon_bolt">⚡</string>
     <string name="icon_egg">🥚</string>
     <string name="icon_chart">📊</string>
@@ -99,7 +100,7 @@
     <string name="toast_disable_drones_first">❌ Сначала выключите режим дронов!</string>
     <string name="toast_drone_mode_start">🚁 Режим дронов: нажмите СТАРТ</string>
     <!-- Dialogs -->
-    <string name="dialog_reset_details">Вернуть ВСЕ настройки к значениям по умолчанию?\n\nБудут сброшены:\n• Координаты точек\n• Координаты дронов\n• Авто-исследования и интервал\n• Настройки скролла лаборатории\n• Другие авто-фичи</string>
+    <string name="dialog_reset_details">Вернуть ВСЕ настройки к значениям по умолчанию?\n\nБудут сброшены:\n• Авто-исследования и интервал\n• Настройки свайпов лаборатории\n• CV-режим и фильтры\n• Другие авто-функции</string>
     <string name="dialog_cancel">Отмена</string>
     <string name="dialog_boost_title">Авто-буст 2x деньги</string>
     <string name="dialog_boost_message">Эта функция автоматически активирует бесплатный буст "Video Doubler" каждые N минут.\n\n⚠️ ВАЖНО:\nДля работы необходимо отключить рекламу в настройках игры.\n\n📍 Как работает:\n1. Открывает меню бустов\n2. Нажимает кнопку FREE\n3. Закрывает меню\n4. Ждёт заданный интервал</string>

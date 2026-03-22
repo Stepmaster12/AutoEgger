@@ -47,6 +47,7 @@ class OverlayService : Service() {
     companion object {
         private const val TAG = "OverlayService"
         private const val PAUSE_OWNER_AUTO_BOOST = "auto_boost"
+        private val mainHandler = Handler(Looper.getMainLooper())
         
         @Volatile
         var isRunning = false
@@ -69,7 +70,7 @@ class OverlayService : Service() {
          */
         fun updateStatus(status: String) {
             currentStatus = status
-            Handler(Looper.getMainLooper()).post {
+            mainHandler.post {
                 statusViewRef?.get()?.text = status
             }
         }
@@ -112,11 +113,11 @@ class OverlayService : Service() {
     private var overlayWatcherActive = false
     private val overlayResizeWatcher = object : Runnable {
         override fun run() {
-            var nextDelayMs = 1000L
+            var nextDelayMs = 1500L
             try {
                 if (!overlayWatcherActive) return
                 if (!hasActiveAutomationWork()) {
-                    nextDelayMs = 4500L
+                    nextDelayMs = 6000L
                     return
                 }
                 val currentWidth = getCurrentScreenWidthPx()
@@ -454,13 +455,6 @@ class OverlayService : Service() {
             resources.displayMetrics.densityDpi
         }
     }
-
-    private data class Quad(
-        val factor: Float,
-        val minDp: Float,
-        val maxDp: Float,
-        val maxRatio: Float
-    )
 
     private fun ensureFeatureServicesInitialized() {
         val accessibility = ClickerAccessibilityService.instance ?: return
@@ -1009,7 +1003,7 @@ class OverlayService : Service() {
     }
     
     private fun showToast(message: String) {
-        Handler(Looper.getMainLooper()).post {
+        mainHandler.post {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
